@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-CN" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — 九地 / JIUDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F2F2EF;
+      --paper-sheet: #F8F8F5;
+      --ink: #151515;
+      --ink-mute: rgba(21, 21, 21, 0.5);
+      --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
+      --en-serif: "EB Garamond", Garamond, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--en-serif);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a,
+    button {
+      color: inherit;
+      font: inherit;
+      background: none;
+      border: 0;
+      padding: 0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .page {
+      position: fixed;
+      inset: 0;
+      background: var(--paper);
+    }
+
+    .identity {
+      position: fixed;
+      top: 28px;
+      left: 36px;
+      z-index: 20;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: max-content;
+      line-height: 1.1;
+    }
+
+    .identity:hover {
+      opacity: 0.7;
+    }
+
+    .identity .zh {
+      display: block;
+      font-family: var(--zh-serif);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      margin-right: -0.12em;
+      line-height: 1.1;
+    }
+
+    .identity .en {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--en-serif);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4.028px;
+      margin-right: -4.028px;
+      color: var(--ink-mute);
+    }
+
+    .nav-block {
+      position: fixed;
+      top: 28px;
+      right: 36px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .nav-toggle {
+      width: 28px;
+      height: 18px;
+      position: relative;
+    }
+
+    .icon-burger,
+    .icon-close {
+      position: absolute;
+      inset: 0;
+    }
+
+    .icon-burger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .icon-burger span {
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--ink);
+    }
+
+    .icon-close {
+      width: 12px;
+      height: 12px;
+      top: 3px;
+      right: 0;
+      left: auto;
+      opacity: 0;
+    }
+
+    .icon-close span {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 12px;
+      height: 1px;
+      background: var(--ink);
+    }
+
+    .icon-close span:first-child {
+      transform: rotate(45deg);
+    }
+
+    .icon-close span:last-child {
+      transform: rotate(-45deg);
+    }
+
+    .nav-block.is-open .icon-burger {
+      opacity: 0;
+    }
+
+    .nav-block.is-open .icon-close {
+      opacity: 1;
+    }
+
+    .menu-links {
+      display: none;
+      margin-top: 16px;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
+      font-family: var(--en-serif);
+      font-size: 15px;
+      line-height: calc(1.55em + 4px);
+      font-weight: 500;
+    }
+
+    .nav-block.is-open .menu-links {
+      display: flex;
+    }
+
+    .menu-links a {
+      opacity: 0.5;
+    }
+
+    .menu-links a.is-current {
+      opacity: 1;
+      font-weight: 500;
+    }
+
+    .menu-links a:hover {
+      opacity: 1;
+    }
+
+    .lang {
+      position: fixed;
+      left: 36px;
+      bottom: 32px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .lang button {
+      opacity: 0.35;
+    }
+
+    .lang button.is-on {
+      opacity: 0.9;
+    }
+
+    .lang .sep {
+      opacity: 0.35;
+      margin: 0 6px;
+      pointer-events: none;
+    }
+
+    .credit {
+      position: fixed;
+      right: 36px;
+      bottom: 32px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      opacity: 0.45;
+    }
+
+    .about-body {
+      position: absolute;
+      top: 23vh;
+      left: 0;
+      right: 0;
+      bottom: 80px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 0 36px 28px 11vw;
+      display: grid;
+      grid-template-columns: max-content minmax(0, 440px);
+      grid-template-areas:
+        "label-bio bio"
+        "label-contact contact"
+        "label-social social";
+      column-gap: 18vw;
+      row-gap: 72px;
+      align-items: start;
+      justify-content: start;
+    }
+
+    .label-bio {
+      grid-area: label-bio;
+    }
+
+    .bio {
+      grid-area: bio;
+      max-width: 440px;
+    }
+
+    .label-contact {
+      grid-area: label-contact;
+    }
+
+    .contact {
+      grid-area: contact;
+      max-width: 440px;
+      padding-top: 4px;
+    }
+
+    .label-social {
+      grid-area: label-social;
+    }
+
+    .social {
+      grid-area: social;
+      max-width: 440px;
+      padding-top: 4px;
+    }
+
+    .label {
+      font-family: var(--en-serif);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.65;
+      padding-top: 0.12em;
+    }
+
+    html[lang="zh-CN"] .label {
+      font-family: var(--zh-serif);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.9;
+    }
+
+    .bio p {
+      margin: 0 0 1.15em;
+      font-family: var(--en-serif);
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.65;
+    }
+
+    .bio p:last-child {
+      margin-bottom: 0;
+    }
+
+    html[lang="zh-CN"] .bio p {
+      font-family: var(--zh-serif);
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.9;
+    }
+
+    .contact-item {
+      margin: 0 0 1.35em;
+    }
+
+    .contact-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .platform {
+      display: block;
+      font-family: var(--en-serif);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.5;
+      opacity: 0.85;
+    }
+
+    html[lang="zh-CN"] .platform.is-zh {
+      font-family: var(--zh-serif);
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .account {
+      display: block;
+      margin-top: 4px;
+      font-family: var(--en-serif);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.5;
+      opacity: 0.55;
+    }
+
+    .account.is-zh {
+      font-family: var(--zh-serif);
+    }
+
+    .platform:hover,
+    .account:hover {
+      opacity: 1;
+    }
+
+    .social .platform {
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 180ms ease;
+    }
+
+    .social .platform:hover {
+      text-decoration: none;
+      opacity: 1;
+    }
+
+    .qr-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms ease;
+    }
+
+    .qr-layer.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .qr-panel {
+      background: var(--paper-sheet);
+      padding: 18px 18px 14px;
+    }
+
+    .qr-panel img {
+      display: block;
+      width: 192px;
+      height: auto;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .qr-name {
+      display: block;
+      margin-top: 10px;
+      font-family: var(--zh-serif);
+      font-size: 12px;
+      font-weight: 400;
+      text-align: center;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 899px) {
+      .about-body {
+        top: 18vh;
+        padding: 0 36px 28px 36px;
+        grid-template-columns: minmax(0, 440px);
+        grid-template-areas:
+          "label-bio"
+          "bio"
+          "label-contact"
+          "contact"
+          "label-social"
+          "social";
+        column-gap: 0;
+        row-gap: 14px;
+      }
+
+      .label-contact {
+        margin-top: 36px;
+      }
+
+      .label-social {
+        margin-top: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="identity" href="index.html">
+      <span class="zh">九地</span>
+      <span class="en">JIUDI</span>
+    </a>
+
+    <div class="nav-block">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
+        <span class="icon-burger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <span class="icon-close">
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+      <nav class="menu-links">
+        <a href="works.html">Works</a>
+        <a href="books.html">Books</a>
+        <a class="is-current" href="about.html">About</a>
+      </nav>
+    </div>
+
+    <div class="lang">
+      <button type="button" data-lang="cn">CN</button><span class="sep">/</span><button type="button" data-lang="en">EN</button>
+    </div>
+
+    <div class="credit">© 2026 JIUDI</div>
+
+    <div class="about-body">
+      <div class="label label-bio"></div>
+      <div class="bio">
+        <p></p>
+        <p></p>
+      </div>
+      <div class="label label-contact"></div>
+      <div class="contact">
+        <div class="contact-item">
+          <a class="platform" href="mailto:Budix9@outlook.com">Email</a>
+          <a class="account" href="mailto:Budix9@outlook.com">Budix9@outlook.com</a>
+        </div>
+      </div>
+      <div class="label label-social"></div>
+      <div class="social">
+        <div class="contact-item">
+          <a class="platform" href="https://www.instagram.com/jiudix/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        </div>
+        <div class="contact-item">
+          <a class="platform js-xhs" href="https://www.xiaohongshu.com/user/profile/578329bd82ec3943a1e4ed5b" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+        <div class="contact-item">
+          <button class="platform js-wechat js-wechat-label" type="button"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qr-layer" aria-hidden="true">
+    <div class="qr-panel" role="dialog" aria-label="自赏">
+      <img src="images/wechat-zishang.jpg" alt="自赏">
+      <span class="qr-name">自赏</span>
+    </div>
+  </div>
+
+  <script>
+    var LANG_KEY = "jiudi-lang";
+    var COPY = {
+      cn: {
+        bioLabel: "个人简介",
+        contactLabel: "联系方式",
+        socialLabel: "社交媒体",
+        bio: [
+          "我是九地，本名罗海燕，布依族人。1994年，我出生于中国贵州都匀，现在长居重庆。",
+          "2014年，我开始拿起相机拍照，并决定成为一名艺术创作者。我的创作包括摄影、视频、综合媒介与文字。"
+        ],
+        xhs: "小红书",
+        wechat: "微信公众号"
+      },
+      en: {
+        bioLabel: "Biography",
+        contactLabel: "Contact",
+        socialLabel: "Social Media",
+        bio: [
+          "I am Jiudi, real name Luo Haiyan, of Bouyei ethnicity. Born in Duyun, Guizhou, China in 1994, I am now based in Chongqing.",
+          "I began taking photographs in 2014 and decided to become an artist. My practice includes photography, video, mixed media, and writing."
+        ],
+        xhs: "Xiaohongshu",
+        wechat: "WeChat Official Account"
+      }
+    };
+
+    var navBlock = document.querySelector(".nav-block");
+    var navToggle = document.querySelector(".nav-toggle");
+    var langButtons = Array.prototype.slice.call(document.querySelectorAll(".lang button"));
+    var bioLabel = document.querySelector(".label-bio");
+    var contactLabel = document.querySelector(".label-contact");
+    var socialLabel = document.querySelector(".label-social");
+    var bioParas = document.querySelectorAll(".bio p");
+    var xhsLink = document.querySelector(".js-xhs");
+    var wechatLabel = document.querySelector(".js-wechat-label");
+    var qrLayer = document.querySelector(".qr-layer");
+    var qrPanel = document.querySelector(".qr-panel");
+
+    function currentLang() {
+      return localStorage.getItem(LANG_KEY) === "en" ? "en" : "cn";
+    }
+
+    function applyLang(lang) {
+      localStorage.setItem(LANG_KEY, lang);
+      document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+
+      langButtons.forEach(function (button) {
+        button.classList.toggle("is-on", button.getAttribute("data-lang") === lang);
+      });
+
+      var copy = COPY[lang];
+      bioLabel.textContent = copy.bioLabel;
+      contactLabel.textContent = copy.contactLabel;
+      socialLabel.textContent = copy.socialLabel;
+      bioParas[0].textContent = copy.bio[0];
+      bioParas[1].textContent = copy.bio[1];
+      xhsLink.textContent = copy.xhs;
+      wechatLabel.textContent = copy.wechat;
+      xhsLink.classList.toggle("is-zh", lang !== "en");
+      wechatLabel.classList.toggle("is-zh", lang !== "en");
+    }
+
+    function openQr() {
+      qrLayer.classList.add("is-open");
+      qrLayer.setAttribute("aria-hidden", "false");
+    }
+
+    function closeQr() {
+      qrLayer.classList.remove("is-open");
+      qrLayer.setAttribute("aria-hidden", "true");
+    }
+
+    applyLang(currentLang());
+
+    langButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        applyLang(button.getAttribute("data-lang"));
+      });
+    });
+
+    navToggle.addEventListener("click", function () {
+      var open = !navBlock.classList.contains("is-open");
+      navBlock.classList.toggle("is-open", open);
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll(".js-wechat"), function (el) {
+      el.addEventListener("click", function () {
+        openQr();
+      });
+    });
+
+    qrLayer.addEventListener("click", function () {
+      closeQr();
+    });
+
+    qrPanel.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeQr();
+      }
+    });
+  </script>
+</body>
+</html>

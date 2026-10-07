@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <title>金桥 — 九地 / JIUDI</title>
+  <style>
+    :root {
+      --paper: #F2F2EF;
+      --paper-sheet: #F8F8F5;
+      --ink: #151515;
+      --ink-mute: rgba(21, 21, 21, 0.5);
+      --zh: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
+      --en: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --en-serif: "EB Garamond", Garamond, serif;
+      --cols: 4;
+      --gap-x: 14px;
+      --gap-y: 18px;
+      --safe-bottom: 10vh;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--en-serif);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a,
+    button {
+      color: inherit;
+      font: inherit;
+      background: none;
+      border: 0;
+      padding: 0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .back {
+      position: fixed;
+      top: 28px;
+      left: 36px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      opacity: 0.82;
+    }
+
+    .back-mark {
+      font-weight: 600;
+    }
+
+    .back:hover {
+      opacity: 1;
+    }
+
+    .lang {
+      position: fixed;
+      left: 36px;
+      bottom: 32px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .lang button {
+      opacity: 0.35;
+    }
+
+    .lang button.is-on {
+      opacity: 0.9;
+    }
+
+    .lang .sep {
+      opacity: 0.35;
+      margin: 0 6px;
+      pointer-events: none;
+    }
+
+    .scroll {
+      position: absolute;
+      top: 100px;
+      left: 0;
+      right: 0;
+      bottom: var(--safe-bottom);
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: auto;
+    }
+
+    .layout {
+      display: flex;
+      align-items: flex-start;
+      gap: 5vw;
+      padding: 0 36px 28px 36px;
+    }
+
+    .meta {
+      position: sticky;
+      top: 0;
+      flex: 0 0 12vw;
+      min-width: 140px;
+    }
+
+    .meta .title {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+      line-height: 1.3;
+      font-family: var(--en-serif);
+    }
+
+    html[lang="zh-CN"] .meta .title {
+      font-family: var(--zh-serif);
+      font-size: 21px;
+      font-weight: 500;
+    }
+
+    html[lang="en"] .meta .title {
+      font-family: var(--en-serif);
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .meta .year {
+      display: block;
+      margin-top: 2px;
+      font-family: var(--en-serif);
+      font-size: 15px;
+      font-weight: 400;
+      opacity: 0.55;
+    }
+
+    .meta .info-btn {
+      display: block;
+      margin-top: 8px;
+      font-family: var(--en-serif);
+      font-size: 16px;
+      font-weight: 500;
+      opacity: 0.7;
+    }
+
+    html[lang="zh-CN"] .meta .info-btn {
+      font-family: var(--zh-serif);
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .meta .info-btn:hover {
+      opacity: 1;
+    }
+
+    .mode-switch {
+      margin-top: 44px;
+      font-family: var(--en-serif);
+      font-size: 14px;
+      letter-spacing: 0.04em;
+    }
+
+    .mode-switch a {
+      font-weight: 400;
+      opacity: 0.38;
+      text-decoration: none;
+      transition: opacity 180ms ease;
+    }
+
+    .mode-switch a + a {
+      margin-left: 1.15em;
+    }
+
+    .mode-switch a.is-on {
+      font-weight: 500;
+      opacity: 0.92;
+    }
+
+    .mode-switch a:hover {
+      opacity: 1;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      column-gap: var(--gap-x);
+      row-gap: var(--gap-y);
+      max-width: 84vw;
+      flex: 1 1 auto;
+    }
+
+    .cell {
+      container-type: size;
+      flex: 0 0 auto;
+      width: calc((100% - (var(--cols) - 1) * var(--gap-x)) / var(--cols));
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      outline: none;
+    }
+
+    .shot {
+      position: relative;
+      display: block;
+      line-height: 0;
+      cursor: pointer;
+    }
+
+    .shot img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100cqw;
+      max-height: 100cqh;
+      object-fit: contain;
+      object-position: center;
+      filter: brightness(1) contrast(1) saturate(1);
+      transition: filter 0.25s ease;
+    }
+
+    .shot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(242, 242, 239, 0.16);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .shot:hover img {
+      filter: brightness(1.06) contrast(0.94) saturate(0.92);
+    }
+
+    .shot:hover::after {
+      opacity: 1;
+    }
+
+    .info-panel {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      z-index: 30;
+      width: min(430px, calc(100vw - 48px));
+      max-height: 65vh;
+      overflow: auto;
+      transform: translate(-50%, -50%);
+      background: var(--paper-sheet);
+      padding: 40px;
+      box-shadow: 0 1px 0 rgba(21, 21, 21, 0.06);
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, visibility 0.18s ease;
+    }
+
+    .info-panel.is-open {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .info-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 13px;
+      height: 13px;
+      opacity: 0.2;
+    }
+
+    .info-close:hover {
+      opacity: 0.5;
+    }
+
+    .info-close span {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 13px;
+      height: 1px;
+      background: var(--ink);
+    }
+
+    .info-close span:first-child {
+      transform: rotate(45deg);
+    }
+
+    .info-close span:last-child {
+      transform: rotate(-45deg);
+    }
+
+    .info-body {
+      font-family: var(--en-serif);
+    }
+
+    .info-body p {
+      margin: 0 0 1.15em;
+      font-size: 15px;
+      line-height: 1.75;
+      font-weight: 400;
+      text-align: left;
+    }
+
+    html[lang="zh-CN"] .info-body {
+      font-family: var(--zh-serif);
+    }
+
+    html[lang="zh-CN"] .info-body p {
+      font-size: 13px;
+      font-weight: 300;
+      text-align: justify;
+    }
+
+    html[lang="en"] .info-body {
+      font-family: var(--en-serif);
+    }
+
+    html[lang="en"] .info-body p {
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .info-body p:last-child {
+      margin-bottom: 0;
+    }
+
+
+    @media (min-width: 900px) {
+      .scroll {
+        top: 28px;
+        bottom: 32px;
+      }
+
+      .layout {
+        padding-bottom: 0;
+      }
+
+      .meta {
+        top: 72px;
+        margin-top: 72px;
+      }
+
+    }
+
+    @media (max-width: 1279px) {
+      :root {
+        --cols: 3;
+      }
+    }
+
+    @media (max-width: 1099px) {
+      :root {
+        --cols: 2;
+      }
+    }
+
+    @media (max-width: 899px) {
+      :root {
+        --cols: 1;
+        --gap-x: 12px;
+        --gap-y: 12px;
+      }
+
+      .layout {
+        flex-direction: column;
+        gap: 28px;
+        padding: 0 36px 28px;
+      }
+
+      .meta {
+        position: relative;
+        top: auto;
+        width: 100%;
+        min-width: 0;
+        flex: none;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto auto;
+        align-items: start;
+      }
+
+      .meta .title {
+        grid-column: 1;
+        grid-row: 1;
+      }
+
+      .meta .year {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .meta .info-btn {
+        grid-column: 2;
+        grid-row: 1 / span 2;
+        margin-top: 0;
+        justify-self: end;
+        align-self: start;
+      }
+
+      .mode-switch {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        margin-top: 18px;
+      }
+
+      .gallery {
+        max-width: none;
+        width: 100%;
+      }
+
+      .cell {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="back" href="../works.html" translate="no"><span class="back-mark">&lt;</span> Back</a>
+
+  <div class="lang">
+    <button type="button" data-lang="cn">CN</button><span class="sep">/</span><button type="button" data-lang="en">EN</button>
+  </div>
+
+
+  <div class="scroll">
+    <div class="layout">
+      <aside class="meta">
+        <h1 class="title"></h1>
+        <span class="year">2016–2024</span>
+        <button class="info-btn" type="button"></button>
+        <div class="mode-switch">
+          <a class="mode" href="../viewer.html?project=golden-bridge">Gallery</a>
+          <a class="mode is-on" href="#">Index</a>
+        </div>
+      </aside>
+      <div class="gallery"></div>
+    </div>
+  </div>
+
+  <div class="info-panel">
+    <button class="info-close" type="button" aria-label="Close">
+      <span></span>
+      <span></span>
+    </button>
+    <div class="info-body"></div>
+  </div>
+
+  <script>
+    var LANG_KEY = "jiudi-lang";
+    var IMAGE_DIR = "../images/works/golden-bridge/";
+    var INFO = {
+      cn: [
+        "诚实是困难的。有时，一个不得不直面诚实的时刻，会促成一段旅程。而在旅程中发出的声响，有人反复回过头去捡拾它，吞咽，随后吟唱。《金桥》就是这样一段旅程。",
+        "几年前回老家，我买下一包「金桥」牌香烟。包装上有一座金色的桥，刻印着漂亮的花体字，把它放在暗处，那座桥还会发出微微的金光。我没在别处见过，便误认为它产自贵州。自后往返，我都要从老家捎上几包再离开。后来，我发现金桥烟其实产自福建，再后来，我发现金桥随处可见：某座桥、某处小镇、某所小区、某家大酒楼、某个旧商场……",
+        "对我而言，“金桥”代表了大部分九零后的某种成长印迹。它陈旧、过时，但没有真正消失。在过去反复出现的它不会引起任何遐想；而童年散去后，谁若是站在烈阳下无意中瞥见锈迹上闪耀的金色，谁的记忆就会被唤醒。这金色会焕然一新，叫人不禁对着它发出新奇的自语：“还记得那时……”也就是这样一个偶然，让我获得一个机会：无数次沉浸在这抹金色之中。久而久之，我惊讶地发现：这是一份情感，它叫做渴望。最终，决定面对并重现这段情感的我，走上这座金色大桥，把那童年的余光带向想象的彼岸。过程有些曲折，找寻并遇见它需要专注；一个不小心我便会丢失它，偶尔这金色太过甜腻，我昏昏欲睡。",
+        "怀旧有很多种，我一直试图在新的经验中找到过去的影子，有时我找到了，有时没有。更多时候这些影子只存在于过去的电视机与广播中，它不是我曾切身赴往的盛会，仅仅是一些遥远的、残余的回响，于是我创造。",
+        "在新的人潮，在新的街道，在新的游乐器械，在新的餐桌中，我看见一张面孔：逝去的时光。"
+      ],
+      en: [
+        "Honesty is difficult. At times, a moment of confronting honesty sparks a journey. Along the way, the echoes of that journey are picked up, swallowed, and then sung. Golden Bridge is such a journey.",
+        "A few years ago, when I returned to my hometown, I bought a pack of “Golden Bridge” cigarettes. The packaging featured a golden bridge with elegant script typeface. If placed in the dark, the bridge emitted a faint golden glow. I had never seen it anywhere else and mistakenly assumed it was produced in Guizhou. Since then, each time I traveled back home, I would take a few packs with me. Later, I discovered that Golden Bridge was actually produced in Fujian, and eventually, I realized it could be found almost everywhere: a certain bridge, a small town, a residential complex, a banquet hall, or an old shopping mall...",
+        "To me, Golden Bridge signifies a particular mark of growth for most of the post-90s generation. It’s worn, outdated, yet never truly disappeared. In the past, its recurring presence evoked no real wandering thoughts. But once childhood fades, if someone were to catch a glimpse of the gold gleaming through rust in the blazing sun, memories would stir. That flash of gold, renewed and vibrant, would bring forth whispers of wonder: “Remember then…” It was this kind of serendipity that gave me the chance—to immerse myself time and again in that golden hue. Over time, I was astonished to realize that this was an emotion: longing. In the end, I chose to face this feeling and relive it, stepping onto the golden bridge, carrying the last glow of my childhood toward the imagined shores beyond. The journey was not straightforward; to find and hold onto that feeling required focus. A slight distraction could cause me to lose it, and sometimes that golden hue was so sweet that it lulled me into a dreamy stupor.",
+        "Nostalgia takes many forms. I’ve always tried to find traces of the past in new experiences. Sometimes I find them, sometimes I don’t. More often than not, these echoes only live in old television sets or radio broadcasts. They are not from the golden moments I directly experienced, but mere fragments I’ve heard of, scattered impressions from a distant past. So, I create.",
+        "Amid the new crowds, on new streets, with new amusement rides and at new dining tables, I see it—a fleeting glimpse of time, slipping away."
+      ]
+    };
+
+    var titleEl = document.querySelector(".meta .title");
+    var infoBtn = document.querySelector(".info-btn");
+    var gallery = document.querySelector(".gallery");
+    var panel = document.querySelector(".info-panel");
+    var infoBody = document.querySelector(".info-body");
+    var infoClose = document.querySelector(".info-close");
+    var langButtons = Array.prototype.slice.call(document.querySelectorAll(".lang button"));
+
+    function currentLang() {
+      return localStorage.getItem(LANG_KEY) === "en" ? "en" : "cn";
+    }
+
+    function renderInfo(lang) {
+      var blocks = INFO[lang] || INFO.cn;
+      infoBody.innerHTML = "";
+      blocks.forEach(function (block) {
+        var p = document.createElement("p");
+        p.textContent = block;
+        infoBody.appendChild(p);
+      });
+    }
+
+    function applyLang(lang) {
+      localStorage.setItem(LANG_KEY, lang);
+      document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+      document.title = (lang === "en" ? "Golden Bridge" : "金桥") + " — 九地 / JIUDI";
+      titleEl.textContent = lang === "en" ? "Golden Bridge" : "金桥";
+      infoBtn.textContent = lang === "en" ? "Info" : "简介";
+
+      Array.prototype.forEach.call(document.querySelectorAll(".mode-switch a.is-on"), function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+      });
+    });
+
+    langButtons.forEach(function (button) {
+        button.classList.toggle("is-on", button.getAttribute("data-lang") === lang);
+      });
+
+      renderInfo(lang);
+    }
+
+    var FILES = [
+        "01.jpg",
+        "02.jpg",
+        "03.jpg",
+        "04.jpg",
+        "05.jpg",
+        "06.jpg",
+        "07.jpg",
+        "08.jpg",
+        "09.jpg",
+        "10.jpg",
+        "11.jpg",
+        "12.jpg",
+        "13.jpg",
+        "14.jpg",
+        "15.jpg",
+        "16.jpg",
+        "17.jpg",
+        "18.jpg",
+        "19.jpg",
+        "20.jpg",
+        "21.jpg",
+        "22.jpg",
+        "23.jpg",
+        "24.jpg",
+        "25.jpg",
+        "26.jpg",
+        "27.jpg",
+        "28.jpg",
+        "29.jpg",
+        "30.jpg",
+        "31.jpg",
+        "32.jpg",
+        "33.jpg",
+        "34.jpg",
+        "35.jpg",
+        "36.jpg",
+        "37.jpg",
+        "38.jpg",
+        "39.jpg",
+        "40.jpg",
+        "41.jpg",
+        "42.jpg",
+        "43.jpg",
+        "44.jpg",
+        "45.jpg",
+        "46.jpg",
+        "47.jpg",
+        "48.jpg"
+    ];
+
+    function loadImages() {
+      FILES.forEach(function (file) {
+        var cell = document.createElement("div");
+        var link = document.createElement("a");
+        var img = document.createElement("img");
+        cell.className = "cell";
+        link.className = "shot";
+        link.href = "../viewer.html?project=golden-bridge&image=" + encodeURIComponent(file);
+        img.src = IMAGE_DIR + file;
+        img.alt = "";
+        img.loading = "lazy";
+        link.appendChild(img);
+        cell.appendChild(link);
+        gallery.appendChild(cell);
+      });
+    }
+
+    function openInfo() {
+      renderInfo(currentLang());
+      panel.classList.add("is-open");
+    }
+
+    function closeInfo() {
+      panel.classList.remove("is-open");
+    }
+
+    infoBtn.addEventListener("click", function (event) {
+      event.stopPropagation();
+      if (panel.classList.contains("is-open")) {
+        closeInfo();
+      } else {
+        openInfo();
+      }
+    });
+
+    infoClose.addEventListener("click", function (event) {
+      event.stopPropagation();
+      closeInfo();
+    });
+
+    panel.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+
+    document.addEventListener("click", function () {
+      if (panel.classList.contains("is-open")) {
+        closeInfo();
+      }
+    });
+
+    langButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        applyLang(button.getAttribute("data-lang"));
+      });
+    });
+
+    applyLang(currentLang());
+    loadImages();
+  </script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books — 九地 / JIUDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F2F2EF;
+      --ink: #151515;
+      --ink-mute: rgba(21, 21, 21, 0.5);
+      --thumb-w: 17.386vw;
+      --thumb-gap: calc((1.5456vw + 8px) * 1.12);
+      --view-inset: 10vw;
+      --zh: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
+      --en: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --en-serif: "EB Garamond", Garamond, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--en-serif);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a,
+    button {
+      color: inherit;
+      font: inherit;
+      background: none;
+      border: 0;
+      padding: 0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .page {
+      position: fixed;
+      inset: 0;
+      background: var(--paper);
+    }
+
+    .identity {
+      position: fixed;
+      top: 28px;
+      left: 36px;
+      z-index: 20;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: max-content;
+      line-height: 1.1;
+    }
+
+    .identity:hover {
+      opacity: 0.7;
+    }
+
+    .identity .zh {
+      display: block;
+      font-family: var(--zh-serif);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      margin-right: -0.12em;
+      line-height: 1.1;
+    }
+
+    .identity .en {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--en-serif);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4.028px;
+      margin-right: -4.028px;
+      color: var(--ink-mute);
+    }
+
+    .nav-block {
+      position: fixed;
+      top: 28px;
+      right: 36px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .nav-toggle {
+      width: 28px;
+      height: 18px;
+      position: relative;
+    }
+
+    .icon-burger,
+    .icon-close {
+      position: absolute;
+      inset: 0;
+    }
+
+    .icon-burger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .icon-burger span {
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: var(--ink);
+    }
+
+    .icon-close {
+      width: 12px;
+      height: 12px;
+      top: 3px;
+      right: 0;
+      left: auto;
+      opacity: 0;
+    }
+
+    .icon-close span {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 12px;
+      height: 1px;
+      background: var(--ink);
+    }
+
+    .icon-close span:first-child {
+      transform: rotate(45deg);
+    }
+
+    .icon-close span:last-child {
+      transform: rotate(-45deg);
+    }
+
+    .nav-block.is-open .icon-burger {
+      opacity: 0;
+    }
+
+    .nav-block.is-open .icon-close {
+      opacity: 1;
+    }
+
+    .menu-links {
+      display: none;
+      margin-top: 16px;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
+      font-family: var(--en-serif);
+      font-size: 15px;
+      line-height: calc(1.55em + 4px);
+      font-weight: 500;
+    }
+
+    .nav-block.is-open .menu-links {
+      display: flex;
+    }
+
+    .menu-links a {
+      opacity: 0.5;
+    }
+
+    .menu-links a.is-current {
+      opacity: 1;
+      font-weight: 500;
+    }
+
+    .menu-links a:hover {
+      opacity: 1;
+    }
+
+    .lang {
+      position: fixed;
+      left: 36px;
+      bottom: 32px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .lang button {
+      opacity: 0.35;
+    }
+
+    .lang button.is-on {
+      opacity: 0.9;
+    }
+
+    .lang .sep {
+      opacity: 0.35;
+      margin: 0 6px;
+      pointer-events: none;
+    }
+
+    .credit {
+      position: fixed;
+      right: 36px;
+      bottom: 32px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      opacity: 0.45;
+    }
+
+    .track-window {
+      position: absolute;
+      left: var(--view-inset);
+      right: var(--view-inset);
+      top: 46%;
+      transform: translateY(-50%);
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: auto;
+      scrollbar-width: none;
+      padding: 2.2vh 0 0;
+    }
+
+    .track-window::-webkit-scrollbar {
+      display: none;
+    }
+
+    .track {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      gap: var(--thumb-gap);
+      width: max-content;
+    }
+
+    .book {
+      flex: 0 0 var(--thumb-w);
+      width: var(--thumb-w);
+      display: block;
+    }
+
+    .book.is-static {
+      cursor: default;
+    }
+
+    .frame {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: visible;
+      background: none;
+      border: none;
+      outline: none;
+    }
+
+    .frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.21));
+      transform: scale(1);
+      transform-origin: center center;
+      transition: transform 0.35s ease;
+    }
+
+    .book:hover .frame img {
+      transform: scale(1.08);
+    }
+
+    .book .title {
+      display: block;
+      margin-top: 16px;
+      font-family: var(--en-serif);
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .book .year {
+      display: block;
+      margin-top: 5px;
+      font-family: var(--en-serif);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.2;
+      text-align: center;
+      opacity: 0.55;
+    }
+
+    html[lang="zh-CN"] .book .title {
+      font-family: var(--zh-serif);
+      font-size: 14px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="identity" href="index.html">
+      <span class="zh">九地</span>
+      <span class="en">JIUDI</span>
+    </a>
+
+    <div class="nav-block">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
+        <span class="icon-burger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <span class="icon-close">
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+      <nav class="menu-links">
+        <a href="works.html">Works</a>
+        <a class="is-current" href="books.html">Books</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+
+    <div class="lang">
+      <button type="button" data-lang="cn">CN</button><span class="sep">/</span><button type="button" data-lang="en">EN</button>
+    </div>
+
+    <div class="credit">© 2026 JIUDI</div>
+
+    <div class="track-window">
+      <div class="track"></div>
+    </div>
+  </div>
+
+  <script>
+    var LANG_KEY = "jiudi-lang";
+
+    var BOOKS = [
+      { slug: "golden-bridge", image: "images/books/golden-bridge.jpg", zh: "金桥", en: "Golden Bridge", year: "2024", href: "books/golden-bridge.html" },
+      { slug: "me", image: "images/books/ME.jpg", zh: "ME", en: "ME" },
+      { slug: "flying", image: "images/books/flying.jpg", zh: "flying", en: "flying" },
+      { slug: "always", image: "images/books/always.jpg", zh: "always", en: "always" }
+    ];
+
+    var track = document.querySelector(".track");
+    var trackWindow = document.querySelector(".track-window");
+    var navBlock = document.querySelector(".nav-block");
+    var navToggle = document.querySelector(".nav-toggle");
+    var langButtons = Array.prototype.slice.call(document.querySelectorAll(".lang button"));
+
+    function currentLang() {
+      return localStorage.getItem(LANG_KEY) === "en" ? "en" : "cn";
+    }
+
+    function applyLang(lang) {
+      localStorage.setItem(LANG_KEY, lang);
+      document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+
+      langButtons.forEach(function (button) {
+        button.classList.toggle("is-on", button.getAttribute("data-lang") === lang);
+      });
+
+      Array.prototype.forEach.call(document.querySelectorAll(".book"), function (item, index) {
+        var book = BOOKS[index];
+        item.querySelector(".title").textContent = lang === "en" ? book.en : book.zh;
+        item.querySelector("img").alt = lang === "en" ? book.en : book.zh;
+      });
+    }
+
+    BOOKS.forEach(function (book) {
+      var item = document.createElement("a");
+      item.className = "book";
+      item.dataset.slug = book.slug;
+      item.innerHTML = '<span class="frame"><img alt=""></span><span class="title"></span>';
+      item.querySelector("img").src = book.image;
+      if (book.year) {
+        var year = document.createElement("span");
+        year.className = "year";
+        year.textContent = book.year;
+        item.appendChild(year);
+      }
+      if (book.href) {
+        item.href = book.href;
+      } else {
+        item.href = "#";
+        item.classList.add("is-static");
+        item.addEventListener("click", function (event) {
+          event.preventDefault();
+        });
+      }
+      track.appendChild(item);
+    });
+
+    applyLang(currentLang());
+
+    langButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        applyLang(button.getAttribute("data-lang"));
+      });
+    });
+
+    navToggle.addEventListener("click", function () {
+      var open = !navBlock.classList.contains("is-open");
+      navBlock.classList.toggle("is-open", open);
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll(".menu-links a"), function (link) {
+      if (link.getAttribute("href") === "#") {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+        });
+      }
+    });
+
+    trackWindow.addEventListener("wheel", function (event) {
+      if (event.deltaY !== 0 && Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+        trackWindow.scrollLeft += event.deltaY;
+        event.preventDefault();
+      }
+    }, { passive: false });
+  </script>
+</body>
+</html>

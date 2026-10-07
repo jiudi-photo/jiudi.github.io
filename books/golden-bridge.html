@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>金桥 — 九地 / JIUDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #F2F2EF;
+      --ink: #151515;
+      --ink-mute: rgba(21, 21, 21, 0.5);
+      --zh: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
+      --en: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --en-serif: "EB Garamond", Garamond, serif;
+      --safe-bottom: 10vh;
+      --fade: 0.7s;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--en-serif);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a,
+    button {
+      color: inherit;
+      font: inherit;
+      background: none;
+      border: 0;
+      padding: 0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .back {
+      position: fixed;
+      top: 28px;
+      left: 36px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      opacity: 0.82;
+    }
+
+    .back-mark {
+      font-weight: 600;
+    }
+
+    .back:hover {
+      opacity: 1;
+    }
+
+    .lang {
+      position: fixed;
+      left: 36px;
+      bottom: 32px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .lang button {
+      opacity: 0.35;
+    }
+
+    .lang button.is-on {
+      opacity: 0.9;
+    }
+
+    .lang .sep {
+      opacity: 0.35;
+      margin: 0 6px;
+      pointer-events: none;
+    }
+
+    .credit {
+      position: fixed;
+      right: 36px;
+      bottom: 32px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      opacity: 0.45;
+    }
+
+    .scroll {
+      position: absolute;
+      top: 100px;
+      left: 0;
+      right: 0;
+      bottom: var(--safe-bottom);
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: auto;
+    }
+
+    .layout {
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+      padding: 0 36px 28px 36px;
+    }
+
+    .meta {
+      position: sticky;
+      top: 0;
+      flex: 0 0 auto;
+      width: max-content;
+      max-width: 13rem;
+      min-width: 0;
+    }
+
+    .meta .title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.3;
+    }
+
+    html[lang="zh-CN"] .meta .title {
+      font-family: var(--zh-serif);
+      font-size: 22px;
+      font-weight: 500;
+    }
+
+    html[lang="en"],
+    html[lang="en"] body {
+      font-family: var(--en-serif);
+    }
+
+    html[lang="en"] .meta .title {
+      font-size: 23px;
+      font-weight: 600;
+    }
+
+    html[lang="en"] .meta .year {
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    html[lang="en"] .specs {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    html[lang="en"] .back {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+    }
+
+    html[lang="en"] .lang {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    html[lang="en"] .credit {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+    }
+
+    html[lang="en"] .counter {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .meta .year {
+      display: block;
+      margin-top: 4px;
+      font-family: var(--en-serif);
+      font-size: 14px;
+      font-weight: 400;
+      opacity: 0.55;
+    }
+
+    html[lang="zh-CN"] .meta .year {
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .specs {
+      margin-top: 28px;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.65;
+      opacity: 0.7;
+    }
+
+    html[lang="zh-CN"] .specs {
+      font-family: var(--zh-serif);
+      font-size: 12px;
+      font-weight: 300;
+    }
+
+    .specs p {
+      margin: 0 0 14px;
+      overflow-wrap: break-word;
+    }
+
+    .specs p:last-child {
+      margin-bottom: 0;
+    }
+
+    .view {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .frame {
+      position: relative;
+      width: 100%;
+      max-width: calc(97.5vh + 5vw);
+      max-height: calc((97.5vh + 5vw) * 2 / 3);
+      aspect-ratio: 3 / 2;
+      margin-left: auto;
+      overflow: hidden;
+      background: none;
+      border: none;
+      outline: none;
+    }
+
+    .frame img {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0;
+      transition: opacity var(--fade) ease-in-out;
+      pointer-events: none;
+    }
+
+    .frame img.is-on {
+      opacity: 1;
+    }
+
+    .hit {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      z-index: 2;
+      background: none;
+      cursor: pointer;
+    }
+
+    .hit-prev {
+      left: 0;
+    }
+
+    .hit-next {
+      right: 0;
+    }
+
+    .counter {
+      display: block;
+      margin-top: 14px;
+      font-family: var(--en-serif);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      opacity: 0.45;
+      text-align: right;
+    }
+
+    .copy {
+      margin-top: 22px;
+    }
+
+    .info-label {
+      display: block;
+      font-family: var(--en-serif);
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0.7;
+    }
+
+    html[lang="zh-CN"] .info-label {
+      font-family: var(--zh-serif);
+      font-weight: 500;
+    }
+
+    html[lang="en"] .info-label {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    html[lang="en"] .info-body p {
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .info-body {
+      margin-top: 14px;
+    }
+
+    .info-body p {
+      margin: 0 0 1.15em;
+      font-size: 13px;
+      line-height: 1.75;
+      font-weight: 400;
+      text-align: left;
+    }
+
+    html[lang="zh-CN"] .info-body p {
+      font-family: var(--zh-serif);
+      font-size: 13px;
+      text-align: justify;
+      font-weight: 300;
+    }
+
+    html[lang="zh-CN"] .info-body {
+      font-family: var(--zh-serif);
+      font-weight: 300;
+    }
+
+    .info-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (min-width: 900px) {
+      .frame,
+      .copy {
+        width: min(calc(100% - 11vw), calc(97.5vh + 5vw));
+        max-width: calc(97.5vh + 5vw);
+        margin-left: auto;
+      }
+    }
+
+    @media (max-width: 1279px) {
+      .layout {
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 1099px) {
+      .layout {
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 899px) {
+      .layout {
+        flex-direction: column;
+        gap: 28px;
+        padding: 0 36px 28px;
+      }
+
+      .meta {
+        position: relative;
+        top: auto;
+        width: 100%;
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="back" href="../books.html" translate="no"><span class="back-mark">&lt;</span> Back</a>
+
+  <div class="lang">
+    <button type="button" data-lang="cn">CN</button><span class="sep">/</span><button type="button" data-lang="en">EN</button>
+  </div>
+
+  <div class="credit">© 2026 JIUDI</div>
+
+  <div class="scroll">
+    <div class="layout">
+      <aside class="meta">
+        <h1 class="title"></h1>
+        <span class="year">2024</span>
+        <div class="specs"></div>
+      </aside>
+      <div class="view">
+        <div class="frame">
+          <img class="is-on" alt="">
+          <img alt="">
+          <button class="hit hit-prev" type="button" aria-label="Previous"></button>
+          <button class="hit hit-next" type="button" aria-label="Next"></button>
+        </div>
+        <span class="counter"></span>
+        <div class="copy">
+          <span class="info-label"></span>
+          <div class="info-body"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var LANG_KEY = "jiudi-lang";
+    var IMAGE_DIR = "../images/books/golden-bridge/";
+    var HOLD_MS = 4000;
+    var FADE_MS = 700;
+    var MAX_IMAGES = 99;
+
+    var INFO = {
+      cn: [
+        "诚实是困难的。有时，一个不得不直面诚实的时刻，会促成一段旅程。而在旅程中发出的声响，有人反复回过头去捡拾它，吞咽，随后吟唱。《金桥》就是这样一段旅程。",
+        "几年前回老家，我买下一包「金桥」牌香烟。包装上有一座金色的桥，刻印着漂亮的花体字，把它放在暗处，那座桥还会发出微微的金光。我没在别处见过，便误认为它产自贵州。自后往返，我都要从老家捎上几包再离开。后来，我发现金桥烟其实产自福建，再后来，我发现金桥随处可见：某座桥、某处小镇、某所小区、某家大酒楼、某个旧商场……",
+        "对我而言，“金桥”代表了大部分九零后的某种成长印迹。它陈旧、过时，但没有真正消失。在过去反复出现的它不会引起任何遐想；而童年散去后，谁若是站在烈阳下无意中瞥见锈迹上闪耀的金色，谁的记忆就会被唤醒。这金色会焕然一新，叫人不禁对着它发出新奇的自语：“还记得那时……”也就是这样一个偶然，让我获得一个机会：无数次沉浸在这抹金色之中。久而久之，我惊讶地发现：这是一份情感，它叫做渴望。最终，决定面对并重现这段情感的我，走上这座金色大桥，把那童年的余光带向想象的彼岸。过程有些曲折，找寻并遇见它需要专注；一个不小心我便会丢失它，偶尔这金色太过甜腻，我昏昏欲睡。",
+        "怀旧有很多种，我一直试图在新的经验中找到过去的影子，有时我找到了，有时没有。更多时候这些影子只存在于过去的电视机与广播中，它不是我曾切身赴往的盛会，仅仅是一些遥远的、残余的回响，于是我创造。",
+        "在新的人潮，在新的街道，在新的游乐器械，在新的餐桌中，我看见一张面孔：逝去的时光。"
+      ],
+      en: [
+        "Honesty is difficult. At times, a moment of confronting honesty sparks a journey. Along the way, the echoes of that journey are picked up, swallowed, and then sung. Golden Bridge is such a journey.",
+        "A few years ago, when I returned to my hometown, I bought a pack of “Golden Bridge” cigarettes. The packaging featured a golden bridge with elegant script typeface. If placed in the dark, the bridge emitted a faint golden glow. I had never seen it anywhere else and mistakenly assumed it was produced in Guizhou. Since then, each time I traveled back home, I would take a few packs with me. Later, I discovered that Golden Bridge was actually produced in Fujian, and eventually, I realized it could be found almost everywhere: a certain bridge, a small town, a residential complex, a banquet hall, or an old shopping mall...",
+        "To me, Golden Bridge signifies a particular mark of growth for most of the post-90s generation. It’s worn, outdated, yet never truly disappeared. In the past, its recurring presence evoked no real wandering thoughts. But once childhood fades, if someone were to catch a glimpse of the gold gleaming through rust in the blazing sun, memories would stir. That flash of gold, renewed and vibrant, would bring forth whispers of wonder: “Remember then…” It was this kind of serendipity that gave me the chance—to immerse myself time and again in that golden hue. Over time, I was astonished to realize that this was an emotion: longing. In the end, I chose to face this feeling and relive it, stepping onto the golden bridge, carrying the last glow of my childhood toward the imagined shores beyond. The journey was not straightforward; to find and hold onto that feeling required focus. A slight distraction could cause me to lose it, and sometimes that golden hue was so sweet that it lulled me into a dreamy stupor.",
+        "Nostalgia takes many forms. I’ve always tried to find traces of the past in new experiences. Sometimes I find them, sometimes I don’t. More often than not, these echoes only live in old television sets or radio broadcasts. They are not from the golden moments I directly experienced, but mere fragments I’ve heard of, scattered impressions from a distant past. So, I create.",
+        "Amid the new crowds, on new streets, with new amusement rides and at new dining tables, I see it—a fleeting glimpse of time, slipping away."
+      ]
+    };
+
+    var SPECS = {
+      cn: [
+        ["作者：九地", "设计：九地"],
+        ["数量：180本（初版）", "尺寸：205 × 140 mm", "页数：164p"],
+        ["护封：四色印刷＋满版光油、烫金", "内封：烫金", "内页：四色印刷＋满版光油", "装订：空背软精装"]
+      ],
+      en: [
+        ["Author: Jiudi", "Design: Jiudi"],
+        ["Edition: 180 copies (First Edition)", "Dimensions: 205 × 140 mm", "Pages: 164"],
+        ["Dust Jacket: Four-color printing, full-surface gloss varnish, gold foil stamping", "Cover: Gold foil stamping", "Interior Pages: Four-color printing, full-surface gloss varnish", "Binding: Hollow-back softcover binding"]
+      ]
+    };
+
+    var titleEl = document.querySelector(".meta .title");
+    var specsEl = document.querySelector(".specs");
+    var infoLabel = document.querySelector(".info-label");
+    var infoBody = document.querySelector(".info-body");
+    var counter = document.querySelector(".counter");
+    var layers = Array.prototype.slice.call(document.querySelectorAll(".frame img"));
+    var langButtons = Array.prototype.slice.call(document.querySelectorAll(".lang button"));
+
+    var files = [];
+    var currentIndex = 0;
+    var front = 0;
+    var busy = false;
+    var pending = null;
+    var playTimer = null;
+
+    function currentLang() {
+      return localStorage.getItem(LANG_KEY) === "en" ? "en" : "cn";
+    }
+
+    function pad(n) {
+      return n < 10 ? "0" + n : String(n);
+    }
+
+    function renderInfo(lang) {
+      var blocks = INFO[lang] || INFO.cn;
+      infoBody.innerHTML = "";
+      blocks.forEach(function (block) {
+        var p = document.createElement("p");
+        p.textContent = block;
+        infoBody.appendChild(p);
+      });
+    }
+
+    function renderSpecs(lang) {
+      var groups = SPECS[lang] || SPECS.cn;
+      specsEl.innerHTML = "";
+      groups.forEach(function (group) {
+        var p = document.createElement("p");
+        group.forEach(function (line, index) {
+          if (index) {
+            p.appendChild(document.createElement("br"));
+          }
+          p.appendChild(document.createTextNode(line));
+        });
+        specsEl.appendChild(p);
+      });
+    }
+
+    function applyLang(lang) {
+      localStorage.setItem(LANG_KEY, lang);
+      document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+      document.title = (lang === "en" ? "Golden Bridge" : "金桥") + " — 九地 / JIUDI";
+      titleEl.textContent = lang === "en" ? "Golden Bridge" : "金桥";
+      infoLabel.textContent = lang === "en" ? "Info" : "简介";
+
+      langButtons.forEach(function (button) {
+        button.classList.toggle("is-on", button.getAttribute("data-lang") === lang);
+      });
+
+      renderSpecs(lang);
+      renderInfo(lang);
+    }
+
+    function updateCounter() {
+      var total = files.length;
+      var digits = String(total).length < 2 ? 2 : String(total).length;
+      var current = String(currentIndex + 1);
+      var all = String(total);
+      while (current.length < digits) {
+        current = "0" + current;
+      }
+      while (all.length < digits) {
+        all = "0" + all;
+      }
+      counter.textContent = current + " / " + all;
+    }
+
+    function scheduleNext() {
+      clearTimeout(playTimer);
+      playTimer = setTimeout(function () {
+        requestShow((currentIndex + 1) % files.length);
+      }, HOLD_MS);
+    }
+
+    function requestShow(index) {
+      if (!files.length) {
+        return;
+      }
+
+      index = (index + files.length) % files.length;
+
+      if (index === currentIndex && !busy) {
+        scheduleNext();
+        return;
+      }
+
+      clearTimeout(playTimer);
+
+      if (busy) {
+        pending = index;
+        return;
+      }
+
+      crossfadeTo(index);
+    }
+
+    function crossfadeTo(index) {
+      var incoming = layers[1 - front];
+      var src = IMAGE_DIR + files[index];
+
+      busy = true;
+      clearTimeout(playTimer);
+
+      var reveal = function () {
+        incoming.classList.add("is-on");
+        layers[front].classList.remove("is-on");
+        front = 1 - front;
+        currentIndex = index;
+        updateCounter();
+
+        setTimeout(function () {
+          busy = false;
+          if (pending !== null && pending !== currentIndex) {
+            var next = pending;
+            pending = null;
+            crossfadeTo(next);
+            return;
+          }
+          pending = null;
+          scheduleNext();
+        }, FADE_MS);
+      };
+
+      incoming.onload = function () {
+        incoming.onload = null;
+        reveal();
+      };
+
+      incoming.src = src;
+
+      if (incoming.complete) {
+        incoming.onload = null;
+        reveal();
+      }
+    }
+
+    function loadImages(done) {
+      var pendingCount = MAX_IMAGES;
+      var found = [];
+
+      function finish() {
+        pendingCount -= 1;
+        if (pendingCount > 0) {
+          return;
+        }
+        found.sort();
+        done(found);
+      }
+
+      for (var i = 1; i <= MAX_IMAGES; i++) {
+        (function (n) {
+          var file = pad(n) + ".jpg";
+          var test = new Image();
+          test.onload = function () {
+            found.push(file);
+            finish();
+          };
+          test.onerror = finish;
+          test.src = IMAGE_DIR + file;
+        })(i);
+      }
+    }
+
+    document.querySelector(".hit-prev").addEventListener("click", function (event) {
+      event.stopPropagation();
+      requestShow(currentIndex - 1);
+    });
+
+    document.querySelector(".hit-next").addEventListener("click", function (event) {
+      event.stopPropagation();
+      requestShow(currentIndex + 1);
+    });
+
+    langButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        applyLang(button.getAttribute("data-lang"));
+      });
+    });
+
+    applyLang(currentLang());
+
+    loadImages(function (found) {
+      files = found;
+      if (!files.length) {
+        return;
+      }
+      layers[front].src = IMAGE_DIR + files[0];
+      updateCounter();
+      scheduleNext();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>九地 / JIUDI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fade: 0.8s;
+      --text: rgba(255, 255, 255, 0.88);
+      --text-strong: rgba(255, 255, 255, 0.98);
+      --text-mute: rgba(255, 255, 255, 0.7);
+      --shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+      --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
+      --en: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
+      --en-serif: "EB Garamond", Garamond, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .stage {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .slides,
+    .slides img,
+    .photo-hit {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .slides img {
+      object-fit: cover;
+      object-position: center;
+      opacity: 0;
+      transition: opacity var(--fade) ease-in-out;
+      pointer-events: none;
+      display: block;
+    }
+
+    .slides img.is-on {
+      opacity: 1;
+    }
+
+    .photo-hit {
+      z-index: 1;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: default;
+    }
+
+    .ui {
+      pointer-events: none;
+    }
+
+    .identity,
+    .nav-block,
+    .social,
+    .caption {
+      position: absolute;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    .identity {
+      top: 28px;
+      left: 36px;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: stretch;
+      width: max-content;
+      line-height: 1.1;
+    }
+
+    .identity:hover {
+      opacity: 0.7;
+    }
+
+    .identity .zh {
+      display: block;
+      font-family: var(--zh-serif);
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      margin-right: -0.12em;
+      line-height: 1.1;
+      color: var(--text-strong);
+      text-shadow: var(--shadow);
+    }
+
+    .identity .en {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--en-serif);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 4.028px;
+      margin-right: -4.028px;
+      color: var(--text-mute);
+      text-shadow: var(--shadow);
+    }
+
+    .nav-block {
+      position: fixed;
+      top: 28px;
+      right: 36px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      filter: drop-shadow(0 1px 10px rgba(0, 0, 0, 0.45));
+    }
+
+    .nav-toggle {
+      width: 28px;
+      height: 18px;
+      position: relative;
+      color: inherit;
+      font: inherit;
+      background: none;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .icon-burger,
+    .icon-close {
+      position: absolute;
+      inset: 0;
+    }
+
+    .icon-burger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .icon-burger span {
+      display: block;
+      width: 28px;
+      height: 1px;
+      background: #fff;
+    }
+
+    .icon-close {
+      width: 12px;
+      height: 12px;
+      top: 3px;
+      right: 0;
+      left: auto;
+      opacity: 0;
+    }
+
+    .icon-close span {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 12px;
+      height: 1px;
+      background: #fff;
+    }
+
+    .icon-close span:first-child {
+      transform: rotate(45deg);
+    }
+
+    .icon-close span:last-child {
+      transform: rotate(-45deg);
+    }
+
+    .nav-block.is-open .icon-burger {
+      opacity: 0;
+    }
+
+    .nav-block.is-open .icon-close {
+      opacity: 1;
+    }
+
+    .menu-links {
+      display: none;
+      margin-top: 16px;
+      flex-direction: column;
+      align-items: flex-end;
+      text-align: right;
+      font-family: var(--en-serif);
+      font-size: 15px;
+      line-height: calc(1.55em + 4px);
+      font-weight: 500;
+    }
+
+    .nav-block.is-open .menu-links {
+      display: flex;
+    }
+
+    .menu-links a {
+      color: #fff;
+      opacity: 0.5;
+    }
+
+    .menu-links a.is-current {
+      opacity: 1;
+      font-weight: 500;
+    }
+
+    .menu-links a:hover {
+      opacity: 1;
+    }
+
+    .social {
+      left: 36px;
+      bottom: 32px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .social a {
+      font-family: var(--en-serif);
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.6;
+      color: var(--text-mute);
+      text-shadow: var(--shadow);
+    }
+
+    .social a:hover {
+      color: var(--text);
+    }
+
+    .caption {
+      right: 36px;
+      bottom: 32px;
+      text-align: right;
+      pointer-events: none;
+      text-shadow: var(--shadow);
+    }
+
+    .caption .title {
+      display: block;
+      font-family: var(--zh-serif);
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+
+    .caption .year {
+      display: block;
+      margin-top: 4px;
+      font-family: var(--en-serif);
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-mute);
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="slides" aria-hidden="true">
+      <img class="layer is-on" src="images/home/home-01.jpg" alt="">
+      <img class="layer" alt="">
+    </div>
+
+    <button class="photo-hit" type="button" aria-label="一场事先张扬的凶杀案"></button>
+
+    <div class="ui">
+      <a class="identity" href="./">
+        <span class="zh">九地</span>
+        <span class="en">JIUDI</span>
+      </a>
+
+      <div class="nav-block">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Menu">
+          <span class="icon-burger">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="icon-close">
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+        <nav class="menu-links">
+          <a href="works.html">Works</a>
+          <a href="books.html">Books</a>
+          <a href="about.html">About</a>
+        </nav>
+      </div>
+
+      <div class="social">
+        <a href="https://www.instagram.com/jiudix/" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.xiaohongshu.com/user/profile/578329bd82ec3943a1e4ed5b" target="_blank" rel="noopener noreferrer">Xiaohongshu</a>
+      </div>
+
+      <div class="caption">
+        <span class="title">一场事先张扬的凶杀案</span>
+        <span class="year">2022</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const HOLD_MS = 3500;
+    const FADE_MS = 800;
+
+    const WORKS = [
+      { src: "images/home/home-01.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" },
+      { src: "images/home/home-02.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images/home/home-03.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images/home/home-04.jpg", title: "幽幽", year: "2021", slug: "youyou" },
+      { src: "images/home/home-05.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images/home/home-06.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images/home/home-07.jpg", title: "幽幽", year: "2021", slug: "youyou" },
+      { src: "images/home/home-08.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" },
+      { src: "images/home/home-09.jpg", title: "幽幽", year: "2021", slug: "youyou" },
+      { src: "images/home/home-10.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images/home/home-11.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" }
+    ];
+
+    const layers = Array.from(document.querySelectorAll(".slides img"));
+    const photoHit = document.querySelector(".photo-hit");
+    const captionTitle = document.querySelector(".caption .title");
+    const captionYear = document.querySelector(".caption .year");
+    const navBlock = document.querySelector(".nav-block");
+    const navToggle = document.querySelector(".nav-toggle");
+
+    let currentIndex = 0;
+    let front = 0;
+    let busy = false;
+    let pending = null;
+    let playTimer = null;
+
+    WORKS.forEach(function (work) {
+      const preload = new Image();
+      preload.src = work.src;
+    });
+
+    function updateCaption(work) {
+      captionTitle.textContent = work.title;
+      captionYear.textContent = work.year;
+      photoHit.setAttribute("aria-label", work.title);
+      photoHit.dataset.project = work.slug;
+    }
+
+    function scheduleNext() {
+      clearTimeout(playTimer);
+      playTimer = setTimeout(function () {
+        requestShow((currentIndex + 1) % WORKS.length);
+      }, HOLD_MS);
+    }
+
+    function requestShow(index) {
+      if (index === currentIndex && !busy) {
+        return;
+      }
+
+      clearTimeout(playTimer);
+
+      if (busy) {
+        pending = index;
+        return;
+      }
+
+      crossfadeTo(index);
+    }
+
+    function crossfadeTo(index) {
+      const work = WORKS[index];
+      const incoming = layers[1 - front];
+
+      busy = true;
+      clearTimeout(playTimer);
+
+      const reveal = function () {
+        incoming.classList.add("is-on");
+        layers[front].classList.remove("is-on");
+        front = 1 - front;
+        currentIndex = index;
+        updateCaption(work);
+
+        setTimeout(function () {
+          busy = false;
+          if (pending !== null && pending !== currentIndex) {
+            const next = pending;
+            pending = null;
+            crossfadeTo(next);
+            return;
+          }
+          pending = null;
+          scheduleNext();
+        }, FADE_MS);
+      };
+
+      if (incoming.getAttribute("src") === work.src && incoming.complete) {
+        reveal();
+        return;
+      }
+
+      incoming.onload = function () {
+        incoming.onload = null;
+        reveal();
+      };
+
+      incoming.src = work.src;
+
+      if (incoming.complete) {
+        incoming.onload = null;
+        reveal();
+      }
+    }
+
+    photoHit.addEventListener("click", function (event) {
+      event.preventDefault();
+      // Homepage V1: keep project slug on the hit target, do not navigate yet.
+    });
+
+    navToggle.addEventListener("click", function () {
+      var open = !navBlock.classList.contains("is-open");
+      navBlock.classList.toggle("is-open", open);
+      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll(".menu-links a"), function (link) {
+      if (link.getAttribute("href") === "#") {
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+        });
+      }
+    });
+
+    updateCaption(WORKS[0]);
+    scheduleNext();
+  </script>
+</body>
+</html>
