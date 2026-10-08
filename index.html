@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" translate="no">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -286,6 +286,78 @@
       font-weight: 400;
       color: var(--text-mute);
     }
+
+    .photo-dim {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    @media (max-width: 899px) {
+      .photo-dim {
+        background: rgba(0, 0, 0, 0.2);
+        transition: opacity 0.3s ease;
+      }
+
+      .stage.is-menu-open .photo-dim {
+        opacity: 1;
+      }
+
+      .identity {
+        top: max(16px, env(safe-area-inset-top));
+        left: max(16px, env(safe-area-inset-left));
+      }
+
+      .nav-block {
+        top: max(16px, env(safe-area-inset-top));
+        right: max(16px, env(safe-area-inset-right));
+        max-width: calc(100vw - 32px);
+      }
+
+      .menu-links {
+        position: absolute;
+        top: calc(22px * 1.1 + 6px + 12px * 1.1 - 19px * 1.1);
+        right: 0;
+        margin-top: 0;
+        flex-direction: row;
+        align-items: flex-end;
+        font-size: 19px;
+        line-height: 1.1;
+        font-weight: 400;
+        gap: 14px;
+        white-space: nowrap;
+      }
+
+      .menu-links a {
+        color: var(--text-strong);
+        opacity: 1;
+        box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0);
+        transition: box-shadow 0.35s ease;
+      }
+
+      .menu-links a:hover,
+      .menu-links a:focus-visible,
+      .menu-links a:active {
+        opacity: 1;
+        font-weight: 400;
+        box-shadow: 0 1px 0 0 #fff;
+      }
+
+      .social {
+        left: max(16px, env(safe-area-inset-left));
+        bottom: max(16px, env(safe-area-inset-bottom));
+        max-width: 42%;
+      }
+
+      .caption {
+        right: max(16px, env(safe-area-inset-right));
+        bottom: max(16px, env(safe-area-inset-bottom));
+        max-width: 48%;
+        white-space: nowrap;
+      }
+    }
   </style>
 </head>
 <body>
@@ -295,10 +367,12 @@
       <img class="layer" alt="">
     </div>
 
+    <div class="photo-dim" aria-hidden="true"></div>
+
     <button class="photo-hit" type="button" aria-label="一场事先张扬的凶杀案"></button>
 
     <div class="ui">
-      <a class="identity" href="./">
+      <a class="identity" href="./" translate="no">
         <span class="zh">九地</span>
         <span class="en">JIUDI</span>
       </a>
@@ -315,14 +389,14 @@
             <span></span>
           </span>
         </button>
-        <nav class="menu-links">
+        <nav class="menu-links" translate="no">
           <a href="works.html">Works</a>
           <a href="books.html">Books</a>
           <a href="about.html">About</a>
         </nav>
       </div>
 
-      <div class="social">
+      <div class="social" translate="no">
         <a href="https://www.instagram.com/jiudix/" target="_blank" rel="noopener noreferrer">Instagram</a>
         <a href="https://www.xiaohongshu.com/user/profile/578329bd82ec3943a1e4ed5b" target="_blank" rel="noopener noreferrer">Xiaohongshu</a>
       </div>
@@ -337,6 +411,7 @@
   <script>
     const HOLD_MS = 3500;
     const FADE_MS = 800;
+    const MOBILE_MQ = "(max-width: 899px)";
 
     const WORKS = [
       { src: "images/home/home-01.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" },
@@ -352,23 +427,53 @@
       { src: "images/home/home-11.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" }
     ];
 
+    const WORKS_MOBILE = [
+      { src: "images/home-mobile/01.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "cronica" },
+      { src: "images/home-mobile/02.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
+      { src: "images/home-mobile/03.jpg", title: "幽幽", year: "2021", slug: "yoyo" },
+      { src: "images/home-mobile/04.jpg", title: "静物", year: "2025", slug: "still-life" },
+      { src: "images/home-mobile/05.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
+      { src: "images/home-mobile/06.jpg", title: "布依", year: "2020–2024", slug: "bouyei" },
+      { src: "images/home-mobile/07.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
+      { src: "images/home-mobile/08.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
+      { src: "images/home-mobile/09.jpg", title: "美丽的细菌", year: "2014–2021", slug: "beautiful-germs" },
+      { src: "images/home-mobile/10.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" }
+    ];
+
+    const stage = document.querySelector(".stage");
     const layers = Array.from(document.querySelectorAll(".slides img"));
     const photoHit = document.querySelector(".photo-hit");
     const captionTitle = document.querySelector(".caption .title");
     const captionYear = document.querySelector(".caption .year");
     const navBlock = document.querySelector(".nav-block");
     const navToggle = document.querySelector(".nav-toggle");
+    const mobileQuery = window.matchMedia(MOBILE_MQ);
 
     let currentIndex = 0;
     let front = 0;
     let busy = false;
     let pending = null;
     let playTimer = null;
+    let usingMobile = mobileQuery.matches;
 
-    WORKS.forEach(function (work) {
-      const preload = new Image();
-      preload.src = work.src;
-    });
+    function isMobile() {
+      return mobileQuery.matches;
+    }
+
+    function currentSlides() {
+      return isMobile() ? WORKS_MOBILE : WORKS;
+    }
+
+    function menuPaused() {
+      return isMobile() && navBlock.classList.contains("is-open");
+    }
+
+    function preloadCurrent() {
+      currentSlides().forEach(function (work) {
+        const preload = new Image();
+        preload.src = work.src;
+      });
+    }
 
     function updateCaption(work) {
       captionTitle.textContent = work.title;
@@ -379,8 +484,11 @@
 
     function scheduleNext() {
       clearTimeout(playTimer);
+      if (menuPaused()) {
+        return;
+      }
       playTimer = setTimeout(function () {
-        requestShow((currentIndex + 1) % WORKS.length);
+        requestShow((currentIndex + 1) % currentSlides().length);
       }, HOLD_MS);
     }
 
@@ -400,7 +508,7 @@
     }
 
     function crossfadeTo(index) {
-      const work = WORKS[index];
+      const work = currentSlides()[index];
       const incoming = layers[1 - front];
 
       busy = true;
@@ -444,6 +552,36 @@
       }
     }
 
+    function resetSlideshow() {
+      const list = currentSlides();
+      currentIndex = 0;
+      front = 0;
+      busy = false;
+      pending = null;
+      clearTimeout(playTimer);
+      layers[0].classList.add("is-on");
+      layers[1].classList.remove("is-on");
+      layers[0].src = list[0].src;
+      layers[1].removeAttribute("src");
+      updateCaption(list[0]);
+      preloadCurrent();
+      if (isMobile() && navBlock.classList.contains("is-open")) {
+        stage.classList.add("is-menu-open");
+      } else {
+        stage.classList.remove("is-menu-open");
+        scheduleNext();
+      }
+    }
+
+    function onViewportChange() {
+      var nowMobile = isMobile();
+      if (nowMobile === usingMobile) {
+        return;
+      }
+      usingMobile = nowMobile;
+      resetSlideshow();
+    }
+
     photoHit.addEventListener("click", function (event) {
       event.preventDefault();
       // Homepage V1: keep project slug on the hit target, do not navigate yet.
@@ -453,6 +591,14 @@
       var open = !navBlock.classList.contains("is-open");
       navBlock.classList.toggle("is-open", open);
       navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      if (isMobile()) {
+        stage.classList.toggle("is-menu-open", open);
+        if (open) {
+          clearTimeout(playTimer);
+        } else {
+          scheduleNext();
+        }
+      }
     });
 
     Array.prototype.forEach.call(document.querySelectorAll(".menu-links a"), function (link) {
@@ -463,7 +609,15 @@
       }
     });
 
-    updateCaption(WORKS[0]);
+    if (mobileQuery.addEventListener) {
+      mobileQuery.addEventListener("change", onViewportChange);
+    } else if (mobileQuery.addListener) {
+      mobileQuery.addListener(onViewportChange);
+    }
+
+    layers[0].src = currentSlides()[0].src;
+    updateCaption(currentSlides()[0]);
+    preloadCurrent();
     scheduleNext();
   </script>
 </body>

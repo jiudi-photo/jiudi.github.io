@@ -376,17 +376,36 @@
       }
     }
 
+    .counter {
+      display: none;
+    }
+
     @media (max-width: 899px) {
       :root {
-        --cols: 1;
+        --cols: 2;
         --gap-x: 12px;
-        --gap-y: 12px;
+        --gap-y: 10px;
+      }
+
+      .back {
+        top: max(16px, env(safe-area-inset-top));
+        left: max(16px, env(safe-area-inset-left));
+      }
+
+      .lang {
+        left: max(16px, env(safe-area-inset-left));
+        bottom: max(16px, env(safe-area-inset-bottom));
+      }
+
+      .scroll {
+        top: calc(40px + env(safe-area-inset-top));
+        bottom: calc(44px + env(safe-area-inset-bottom));
       }
 
       .layout {
         flex-direction: column;
-        gap: 28px;
-        padding: 0 36px 28px;
+        gap: 24px;
+        padding: 0 16px 20px;
       }
 
       .meta {
@@ -395,24 +414,27 @@
         width: 100%;
         min-width: 0;
         flex: none;
+        margin-top: 12px;
         display: grid;
-        grid-template-columns: 1fr auto;
+        grid-template-columns: auto auto auto 1fr auto;
         grid-template-rows: auto auto auto;
         align-items: start;
+        column-gap: 1.15em;
+        row-gap: 0;
       }
 
       .meta .title {
-        grid-column: 1;
+        grid-column: 1 / 5;
         grid-row: 1;
       }
 
       .meta .year {
-        grid-column: 1;
+        grid-column: 1 / 5;
         grid-row: 2;
       }
 
       .meta .info-btn {
-        grid-column: 2;
+        grid-column: 5;
         grid-row: 1 / span 2;
         margin-top: 0;
         justify-self: end;
@@ -420,17 +442,35 @@
       }
 
       .mode-switch {
-        grid-column: 1 / -1;
+        display: contents;
+      }
+
+      .mode-switch a {
         grid-row: 3;
-        margin-top: 18px;
+        margin-top: 8px;
+        margin-left: 0;
+        white-space: nowrap;
+        align-self: baseline;
+      }
+
+      .mode-switch a + a {
+        margin-left: 0;
+      }
+
+      .mode-switch a:nth-child(1) {
+        grid-column: 1;
+      }
+
+      .mode-switch a:nth-child(2) {
+        grid-column: 2;
+      }
+
+      .counter {
+        display: none;
       }
 
       .gallery {
         max-width: none;
-        width: 100%;
-      }
-
-      .cell {
         width: 100%;
       }
     }
@@ -454,6 +494,7 @@
           <a class="mode" href="../viewer.html?project=cronica">Gallery</a>
           <a class="mode is-on" href="#">Index</a>
         </div>
+        <span class="counter">01 / 01</span>
       </aside>
       <div class="gallery"></div>
     </div>
@@ -612,6 +653,14 @@
 
     applyLang(currentLang());
     loadImages();
+    (function () {
+      var el = document.querySelector(".counter");
+      if (!el || typeof FILES === "undefined") {
+        return;
+      }
+      var n = FILES.length || 1;
+      el.textContent = "01 / " + (n < 10 ? "0" + n : String(n));
+    })();
   </script>
 </body>
 </html>
