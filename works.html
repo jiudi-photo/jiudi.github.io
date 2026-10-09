@@ -292,6 +292,7 @@
       object-position: center;
       transform: scale(1);
       transform-origin: center center;
+      filter: grayscale(0);
       transition: transform 0.35s ease;
     }
 
@@ -442,6 +443,7 @@
       .work:active .frame img,
       .work.is-press .frame img {
         filter: grayscale(15%);
+        -webkit-filter: grayscale(15%);
       }
 
       .work .title,
@@ -550,7 +552,7 @@
       item.href = "viewer.html?project=" + encodeURIComponent(project.slug);
       item.dataset.slug = project.slug;
       item.innerHTML = '<span class="frame"><img alt=""></span><span class="title"></span><span class="year"></span>';
-      item.querySelector("img").src = project.image;
+      item.querySelector("img").src = encodeURI(project.image) + "?v=2";
       item.querySelector(".year").textContent = project.year;
       track.appendChild(item);
     });
@@ -582,8 +584,31 @@
       var startY = 0;
 
       function pressedCover(event) {
-        var frame = event.target.closest(".work .frame");
-        return frame ? frame.closest(".work") : null;
+        var touch = event.touches[0] || event.changedTouches[0];
+        if (!touch) {
+          return null;
+        }
+        var node = event.target;
+        if (node && node.nodeType === 3) {
+          node = node.parentElement;
+        }
+        var work = node && node.closest ? node.closest(".work") : null;
+        if (!work) {
+          var hit = document.elementFromPoint(touch.clientX, touch.clientY);
+          work = hit && hit.closest ? hit.closest(".work") : null;
+        }
+        if (!work) {
+          return null;
+        }
+        var frame = work.querySelector(".frame");
+        if (!frame) {
+          return null;
+        }
+        var box = frame.getBoundingClientRect();
+        if (touch.clientX < box.left || touch.clientX > box.right || touch.clientY < box.top || touch.clientY > box.bottom) {
+          return null;
+        }
+        return work;
       }
 
       function clearPress() {
@@ -592,7 +617,7 @@
         });
       }
 
-      track.addEventListener("touchstart", function (event) {
+      trackWindow.addEventListener("touchstart", function (event) {
         if (!window.matchMedia("(max-width: 899px)").matches || event.touches.length !== 1) {
           return;
         }
@@ -603,25 +628,25 @@
         startX = event.touches[0].clientX;
         startY = event.touches[0].clientY;
         cover.classList.add("is-press");
-      }, { passive: true });
+      }, { passive: true, capture: true });
 
-      track.addEventListener("touchmove", function (event) {
+      trackWindow.addEventListener("touchmove", function (event) {
         if (event.touches.length !== 1) {
           return;
         }
-        var cover = event.target.closest(".work");
+        var cover = event.target.closest ? event.target.closest(".work") : null;
         if (!cover || !cover.classList.contains("is-press")) {
           return;
         }
         var dx = event.touches[0].clientX - startX;
         var dy = event.touches[0].clientY - startY;
-        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+        if (Math.abs(dx) > 16 && Math.abs(dx) >= Math.abs(dy)) {
           cover.classList.remove("is-press");
         }
-      }, { passive: true });
+      }, { passive: true, capture: true });
 
-      track.addEventListener("touchend", clearPress, { passive: true });
-      track.addEventListener("touchcancel", clearPress, { passive: true });
+      trackWindow.addEventListener("touchend", clearPress, { passive: true, capture: true });
+      trackWindow.addEventListener("touchcancel", clearPress, { passive: true, capture: true });
     })();
 
     trackWindow.addEventListener("wheel", function (event) {
