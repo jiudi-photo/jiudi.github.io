@@ -223,32 +223,40 @@
 
     .menu-links {
       display: none;
-      margin-top: 16px;
-      flex-direction: column;
+      position: absolute;
+      top: calc(22px * 1.1 + 6px + 12px * 1.1 - 19px * 1.1);
+      right: 0;
+      margin-top: 0;
+      flex-direction: row;
       align-items: flex-end;
       text-align: right;
       font-family: var(--en-serif);
-      font-size: 16px;
-      line-height: calc(1.55em + 4px);
-      font-weight: 500;
+      font-size: 19px;
+      line-height: 1.1;
+      font-weight: 400;
+      gap: 22px;
+      white-space: nowrap;
     }
 
     .nav-block.is-open .menu-links {
       display: flex;
     }
 
-    .menu-links a {
-      color: #fff;
-      opacity: 0.5;
-    }
-
+    .menu-links a,
     .menu-links a.is-current {
+      color: var(--text-strong);
       opacity: 1;
-      font-weight: 500;
+      font-weight: 400;
+      box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0);
+      transition: box-shadow 0.35s ease;
     }
 
-    .menu-links a:hover {
+    .menu-links a:hover,
+    .menu-links a:focus-visible,
+    .menu-links a:active {
       opacity: 1;
+      font-weight: 400;
+      box-shadow: 0 1px 0 0 #fff;
     }
 
     .social {
@@ -460,7 +468,7 @@
       { src: "images/home/home-06.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
       { src: "images/home/home-07.jpg", title: "幽幽", year: "2021", slug: "youyou" },
       { src: "images/home/home-08.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" },
-      { src: "images/home/home-09.jpg", title: "幽幽", year: "2021", slug: "youyou" },
+      { src: "images/home/home-09.jpg", title: "布依", year: "2020–2024", slug: "bouyei" },
       { src: "images/home/home-10.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
       { src: "images/home/home-11.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" }
     ];

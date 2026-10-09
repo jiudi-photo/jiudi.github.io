@@ -13,9 +13,8 @@
       --paper: #F2F2EF;
       --ink: #151515;
       --ink-mute: rgba(21, 21, 21, 0.5);
-      --thumb-w: 17.386vw;
-      --thumb-gap: calc((1.5456vw + 8px) * 1.12);
-      --view-inset: 10vw;
+      --thumb-w: clamp(430px, calc(91.8px + 28vw), 495px);
+      --thumb-gap: 144px;
       --zh: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
       --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
       --en: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -172,31 +171,40 @@
 
     .menu-links {
       display: none;
-      margin-top: 16px;
-      flex-direction: column;
+      position: absolute;
+      top: calc(22px * 1.1 + 6px + 12px * 1.1 - 19px * 1.1);
+      right: 0;
+      margin-top: 0;
+      flex-direction: row;
       align-items: flex-end;
       text-align: right;
       font-family: var(--en-serif);
-      font-size: 16px;
-      line-height: calc(1.55em + 4px);
-      font-weight: 500;
+      font-size: 19px;
+      line-height: 1.1;
+      font-weight: 400;
+      gap: 22px;
+      white-space: nowrap;
     }
 
     .nav-block.is-open .menu-links {
       display: flex;
     }
 
-    .menu-links a {
-      opacity: 0.5;
-    }
-
+    .menu-links a,
     .menu-links a.is-current {
+      color: var(--ink);
       opacity: 1;
-      font-weight: 500;
+      font-weight: 400;
+      box-shadow: 0 1px 0 0 rgba(21, 21, 21, 0);
+      transition: box-shadow 0.35s ease;
     }
 
-    .menu-links a:hover {
+    .menu-links a:hover,
+    .menu-links a:focus-visible,
+    .menu-links a:active {
       opacity: 1;
+      font-weight: 400;
+      box-shadow: 0 1px 0 0 var(--ink);
     }
 
     .lang {
@@ -238,15 +246,15 @@
 
     .track-window {
       position: absolute;
-      left: var(--view-inset);
-      right: var(--view-inset);
-      top: 46%;
+      left: 0;
+      right: 0;
+      top: 50%;
       transform: translateY(-50%);
       overflow-x: auto;
       overflow-y: hidden;
       scroll-behavior: auto;
       scrollbar-width: none;
-      padding: 2.2vh 0 0;
+      padding: 10px 0;
     }
 
     .track-window::-webkit-scrollbar {
@@ -259,6 +267,8 @@
       align-items: flex-start;
       gap: var(--thumb-gap);
       width: max-content;
+      padding-left: 6vw;
+      padding-right: 6vw;
     }
 
     .book {
@@ -299,9 +309,9 @@
 
     .book .title {
       display: block;
-      margin-top: 16px;
+      margin-top: 15px;
       font-family: var(--en-serif);
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 500;
       line-height: 1.3;
       text-align: center;
@@ -311,16 +321,20 @@
       display: block;
       margin-top: 5px;
       font-family: var(--en-serif);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 400;
       line-height: 1.2;
       text-align: center;
       opacity: 0.55;
     }
 
+    html[lang="en"] .book .year {
+      margin-top: 2px;
+    }
+
     html[lang="zh-CN"] .book .title {
       font-family: var(--zh-serif);
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 500;
     }
 
@@ -390,7 +404,7 @@
       }
 
       .track-window {
-        --cover: 72vw;
+        --cover: 79.2vw;
         left: 0;
         right: 0;
         top: 50%;
@@ -433,12 +447,9 @@
         transform: none;
       }
 
-      .book .frame img {
-        transition: transform 0.35s ease, filter 0.12s ease;
-      }
-
-      .book:active .frame img {
-        filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.21)) grayscale(0.08);
+      .book:active .frame img,
+      .book.is-press .frame img {
+        filter: grayscale(15%) drop-shadow(0 5px 8px rgba(0, 0, 0, 0.21));
       }
 
       .frame img {
@@ -589,6 +600,53 @@
         });
       }
     });
+
+    (function bindCoverPress() {
+      var startX = 0;
+      var startY = 0;
+
+      function pressedCover(event) {
+        var frame = event.target.closest(".book .frame");
+        return frame ? frame.closest(".book") : null;
+      }
+
+      function clearPress() {
+        Array.prototype.forEach.call(document.querySelectorAll(".book.is-press"), function (cover) {
+          cover.classList.remove("is-press");
+        });
+      }
+
+      track.addEventListener("touchstart", function (event) {
+        if (!window.matchMedia("(max-width: 899px)").matches || event.touches.length !== 1) {
+          return;
+        }
+        var cover = pressedCover(event);
+        if (!cover) {
+          return;
+        }
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+        cover.classList.add("is-press");
+      }, { passive: true });
+
+      track.addEventListener("touchmove", function (event) {
+        if (event.touches.length !== 1) {
+          return;
+        }
+        var cover = event.target.closest(".book");
+        if (!cover || !cover.classList.contains("is-press")) {
+          return;
+        }
+        var dx = event.touches[0].clientX - startX;
+        var dy = event.touches[0].clientY - startY;
+        if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+          cover.classList.remove("is-press");
+        }
+      }, { passive: true });
+
+      track.addEventListener("touchend", clearPress, { passive: true });
+      track.addEventListener("touchcancel", clearPress, { passive: true });
+    })();
 
     trackWindow.addEventListener("wheel", function (event) {
       if (event.deltaY !== 0 && Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
