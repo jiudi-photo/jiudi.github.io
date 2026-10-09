@@ -6,7 +6,7 @@
   <title>九地 / JIUDI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Noto+Serif+SC:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Noto+Serif+SC:wght@400;500;600&family=STIX+Two+Text:wght@400&display=swap" rel="stylesheet">
   <style>
     :root {
       --fade: 0.8s;
@@ -99,41 +99,50 @@
     }
 
     .identity {
-      top: 28px;
+      top: calc(28px - 0.25em);
       left: 36px;
       display: inline-flex;
-      flex-direction: column;
-      align-items: stretch;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: baseline;
+      column-gap: calc(0.28em - 1px);
       width: max-content;
-      line-height: 1.1;
+      white-space: nowrap;
+      font-size: 28px;
+      line-height: 1;
     }
 
     .identity:hover {
       opacity: 0.7;
     }
 
-    .identity .zh {
-      display: block;
-      font-family: var(--zh-serif);
-      font-size: 22px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      margin-right: -0.12em;
-      line-height: 1.1;
+    .identity .en,
+    .identity .slash {
+      font-family: "STIX Two Text", "Times New Roman", serif;
+      font-weight: 400;
+      letter-spacing: 0;
       color: var(--text-strong);
       text-shadow: var(--shadow);
+      line-height: 1;
     }
 
     .identity .en {
-      display: block;
-      margin-top: 6px;
-      font-family: var(--en-serif);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 4.028px;
-      margin-right: -4.028px;
-      color: var(--text-mute);
+      font-size: 27px;
+    }
+
+    .identity .slash {
+      font-size: 24px;
+    }
+
+    .identity .zh {
+      font-family: var(--zh-serif);
+      font-size: 21px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-right: -2px;
+      color: var(--text-strong);
       text-shadow: var(--shadow);
+      line-height: 1;
     }
 
     .nav-block {
@@ -219,7 +228,7 @@
       align-items: flex-end;
       text-align: right;
       font-family: var(--en-serif);
-      font-size: 15px;
+      font-size: 16px;
       line-height: calc(1.55em + 4px);
       font-weight: 500;
     }
@@ -322,8 +331,20 @@
       }
 
       .identity {
-        top: max(16px, env(safe-area-inset-top));
+        top: calc(max(16px, env(safe-area-inset-top)) - 0.12em);
         left: max(16px, env(safe-area-inset-left));
+      }
+
+      .identity .en {
+        font-size: 25px;
+      }
+
+      .identity .slash {
+        font-size: 22px;
+      }
+
+      .identity .zh {
+        font-size: 19px;
       }
 
       .nav-block {
@@ -346,9 +367,11 @@
         white-space: nowrap;
       }
 
-      .menu-links a {
+      .menu-links a,
+      .menu-links a.is-current {
         color: var(--text-strong);
         opacity: 1;
+        font-weight: 400;
         box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0);
         transition: box-shadow 0.35s ease;
       }
@@ -389,8 +412,7 @@
 
     <div class="ui">
       <a class="identity" href="./" translate="no">
-        <span class="zh">九地</span>
-        <span class="en">JIUDI</span>
+        <span class="en">Jiudi</span><span class="slash">/</span><span class="zh">九地</span>
       </a>
 
       <div class="nav-block">

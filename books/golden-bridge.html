@@ -475,6 +475,29 @@
         height: auto;
         margin-left: 0;
         overflow: hidden;
+        touch-action: pan-y;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .hit {
+        touch-action: pan-y;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-appearance: none;
+        appearance: none;
+        background: transparent;
+      }
+
+      .hit:hover,
+      .hit:active,
+      .hit:focus {
+        background: none;
+        outline: none;
+        box-shadow: none;
+      }
+
+      .hit:focus-visible {
+        outline: 1px dotted rgba(21, 21, 21, 0.45);
+        outline-offset: -3px;
       }
 
       .frame img,
@@ -739,15 +762,69 @@
       }
     }
 
-    document.querySelector(".hit-prev").addEventListener("click", function (event) {
+    var prevHit = document.querySelector(".hit-prev");
+    var nextHit = document.querySelector(".hit-next");
+    var frameEl = document.querySelector(".frame");
+    var suppressTap = false;
+    var swipeX = 0;
+    var swipeY = 0;
+    var swipeOn = false;
+
+    function isPhone() {
+      return window.matchMedia("(max-width: 899px)").matches;
+    }
+
+    prevHit.addEventListener("click", function (event) {
       event.stopPropagation();
+      if (suppressTap) {
+        event.preventDefault();
+        return;
+      }
       requestShow(currentIndex - 1);
     });
 
-    document.querySelector(".hit-next").addEventListener("click", function (event) {
+    nextHit.addEventListener("click", function (event) {
       event.stopPropagation();
+      if (suppressTap) {
+        event.preventDefault();
+        return;
+      }
       requestShow(currentIndex + 1);
     });
+
+    frameEl.addEventListener("touchstart", function (event) {
+      if (!isPhone() || event.touches.length !== 1) {
+        swipeOn = false;
+        return;
+      }
+      swipeX = event.touches[0].clientX;
+      swipeY = event.touches[0].clientY;
+      swipeOn = true;
+    }, { passive: true });
+
+    frameEl.addEventListener("touchend", function (event) {
+      if (!swipeOn) {
+        return;
+      }
+      swipeOn = false;
+      if (!isPhone() || event.changedTouches.length !== 1) {
+        return;
+      }
+      var dx = event.changedTouches[0].clientX - swipeX;
+      var dy = event.changedTouches[0].clientY - swipeY;
+      if (Math.abs(dx) < 48 || Math.abs(dx) <= Math.abs(dy)) {
+        return;
+      }
+      suppressTap = true;
+      setTimeout(function () {
+        suppressTap = false;
+      }, 450);
+      if (dx < 0) {
+        requestShow(currentIndex + 1);
+      } else {
+        requestShow(currentIndex - 1);
+      }
+    }, { passive: true });
 
     detailsBtn.addEventListener("click", function (event) {
       event.stopPropagation();
