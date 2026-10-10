@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>九地 / JIUDI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Noto+Serif+SC:wght@400;500;600&family=STIX+Two+Text:wght@400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Regular/TaipeiSansTCBeta-Regular.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Bold/TaipeiSansTCBeta-Bold.css" rel="stylesheet">
   <style>
     :root {
       --fade: 0.8s;
@@ -14,10 +15,10 @@
       --text-strong: rgba(255, 255, 255, 0.98);
       --text-mute: rgba(255, 255, 255, 0.7);
       --shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
-      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-      --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
-      --en: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
-      --en-serif: "EB Garamond", Garamond, serif;
+      --sans: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --zh-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
     }
 
     * {
@@ -105,7 +106,7 @@
       flex-direction: row;
       flex-wrap: nowrap;
       align-items: baseline;
-      column-gap: calc(0.28em - 1px);
+      column-gap: calc(0.28em - 3px);
       width: max-content;
       white-space: nowrap;
       font-size: 28px;
@@ -118,7 +119,7 @@
 
     .identity .en,
     .identity .slash {
-      font-family: "STIX Two Text", "Times New Roman", serif;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
       font-weight: 400;
       letter-spacing: 0;
       color: var(--text-strong);
@@ -127,11 +128,13 @@
     }
 
     .identity .en {
-      font-size: 27px;
+      font-size: 24px;
+      font-weight: 500;
     }
 
     .identity .slash {
       font-size: 24px;
+      font-weight: 500;
     }
 
     .identity .zh {
@@ -183,7 +186,7 @@
     .icon-burger span {
       display: block;
       width: 28px;
-      height: 1px;
+      height: 2px;
       background: #fff;
     }
 
@@ -344,7 +347,7 @@
       }
 
       .identity .en {
-        font-size: 25px;
+        font-size: 22px;
       }
 
       .identity .slash {
@@ -361,6 +364,18 @@
         max-width: calc(100vw - 32px);
       }
 
+      .icon-burger {
+        inset: auto;
+        top: 0;
+        right: 0;
+        width: 26px;
+        height: 18px;
+      }
+
+      .icon-burger span {
+        width: 26px;
+      }
+
       .menu-links {
         position: absolute;
         top: calc(22px * 1.1 + 6px + 12px * 1.1 - 19px * 1.1);
@@ -368,7 +383,7 @@
         margin-top: 0;
         flex-direction: row;
         align-items: flex-end;
-        font-size: 19px;
+        font-size: 17px;
         line-height: 1.1;
         font-weight: 400;
         gap: 14px;
@@ -404,6 +419,18 @@
         max-width: 48%;
         white-space: nowrap;
       }
+
+      .social a {
+        font-size: 12px;
+      }
+
+      .caption .title {
+        font-size: 12px;
+      }
+
+      .caption .year {
+        font-size: 11px;
+      }
     }
   </style>
 </head>
@@ -420,7 +447,7 @@
 
     <div class="ui">
       <a class="identity" href="./" translate="no">
-        <span class="en">Jiudi</span><span class="slash">/</span><span class="zh">九地</span>
+        <span class="en">JIUDI</span><span class="slash">/</span><span class="zh">九地</span>
       </a>
 
       <div class="nav-block">

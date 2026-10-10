@@ -4,9 +4,10 @@
   <meta charset="UTF-8">
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Regular/TaipeiSansTCBeta-Regular.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Bold/TaipeiSansTCBeta-Bold.css" rel="stylesheet">
   <title>静物 — 九地 / JIUDI</title>
   <style>
     :root {
@@ -14,10 +15,10 @@
       --paper-sheet: #F8F8F5;
       --ink: #151515;
       --ink-mute: rgba(21, 21, 21, 0.5);
-      --zh: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-      --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
-      --en: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
-      --en-serif: "EB Garamond", Garamond, serif;
+      --zh: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --zh-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
       --cols: 4;
       --gap-x: 14px;
       --gap-y: 18px;
@@ -58,7 +59,7 @@
       left: 36px;
       z-index: 20;
       font-family: var(--en-serif);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 500;
       letter-spacing: 0.04em;
       opacity: 0.82;
@@ -78,7 +79,7 @@
       bottom: 32px;
       z-index: 20;
       font-family: var(--en-serif);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.06em;
     }
@@ -124,7 +125,7 @@
 
     .meta .title {
       margin: 0;
-      font-size: 22px;
+      font-size: 23px;
       font-weight: 600;
       line-height: 1.3;
       font-family: var(--en-serif);
@@ -132,13 +133,13 @@
 
     html[lang="zh-CN"] .meta .title {
       font-family: var(--zh-serif);
-      font-size: 21px;
-      font-weight: 500;
+      font-size: 22px;
+      font-weight: 600;
     }
 
     html[lang="en"] .meta .title {
       font-family: var(--en-serif);
-      font-size: 22px;
+      font-size: 23px;
       font-weight: 600;
     }
 
@@ -146,7 +147,7 @@
       display: block;
       margin-top: 2px;
       font-family: var(--en-serif);
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 400;
       opacity: 0.55;
     }
@@ -155,14 +156,14 @@
       display: block;
       margin-top: 8px;
       font-family: var(--en-serif);
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 500;
       opacity: 0.7;
     }
 
     html[lang="zh-CN"] .meta .info-btn {
       font-family: var(--zh-serif);
-      font-size: 16px;
+      font-size: 17px;
       font-weight: 500;
     }
 
@@ -173,7 +174,7 @@
     .mode-switch {
       margin-top: 44px;
       font-family: var(--en-serif);
-      font-size: 14px;
+      font-size: 15px;
       letter-spacing: 0.04em;
     }
 
@@ -390,11 +391,51 @@
       .back {
         top: max(16px, env(safe-area-inset-top));
         left: max(16px, env(safe-area-inset-left));
+        font-size: 13px;
       }
 
       .lang {
         left: max(16px, env(safe-area-inset-left));
         bottom: max(16px, env(safe-area-inset-bottom));
+        font-size: 12px;
+      }
+
+      .meta .title {
+        font-size: 21px;
+      }
+
+      html[lang="zh-CN"] .meta .title {
+        font-size: 20px;
+      }
+
+      html[lang="en"] .meta .title {
+        font-size: 21px;
+      }
+
+      .meta .year {
+        font-size: 14px;
+      }
+
+      .meta .info-btn,
+      html[lang="zh-CN"] .meta .info-btn {
+        font-size: 15px;
+      }
+
+      .mode-switch {
+        font-size: 13px;
+      }
+
+      .counter {
+        font-size: 13px;
+      }
+
+      .info-body p,
+      html[lang="en"] .info-body p {
+        font-size: 14px;
+      }
+
+      html[lang="zh-CN"] .info-body p {
+        font-size: 12px;
       }
 
       .scroll {

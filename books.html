@@ -5,9 +5,10 @@
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Books — 九地 / JIUDI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Noto+Serif+SC:wght@400;500;600&family=STIX+Two+Text:wght@400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Regular/TaipeiSansTCBeta-Regular.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Bold/TaipeiSansTCBeta-Bold.css" rel="stylesheet">
   <style>
     :root {
       --paper: #F2F2EF;
@@ -15,10 +16,10 @@
       --ink-mute: rgba(21, 21, 21, 0.5);
       --thumb-w: clamp(430px, calc(91.8px + 28vw), 495px);
       --thumb-gap: 144px;
-      --zh: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-      --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
-      --en: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
-      --en-serif: "EB Garamond", Garamond, serif;
+      --zh: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --zh-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
     }
 
     * {
@@ -64,7 +65,7 @@
       flex-direction: row;
       flex-wrap: nowrap;
       align-items: baseline;
-      column-gap: calc(0.28em - 1px);
+      column-gap: calc(0.28em - 3px);
       width: max-content;
       white-space: nowrap;
       font-size: 28px;
@@ -77,18 +78,20 @@
 
     .identity .en,
     .identity .slash {
-      font-family: "STIX Two Text", "Times New Roman", serif;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
       font-weight: 400;
       letter-spacing: 0;
       line-height: 1;
     }
 
     .identity .en {
-      font-size: 27px;
+      font-size: 24px;
+      font-weight: 500;
     }
 
     .identity .slash {
       font-size: 24px;
+      font-weight: 500;
     }
 
     .identity .zh {
@@ -131,7 +134,7 @@
     .icon-burger span {
       display: block;
       width: 28px;
-      height: 1px;
+      height: 2px;
       background: var(--ink);
     }
 
@@ -213,7 +216,7 @@
       bottom: 32px;
       z-index: 20;
       font-family: var(--en-serif);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.06em;
     }
@@ -238,7 +241,7 @@
       bottom: 32px;
       z-index: 20;
       font-family: var(--en-serif);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 400;
       letter-spacing: 0.04em;
       opacity: 0.45;
@@ -311,17 +314,17 @@
       display: block;
       margin-top: 15px;
       font-family: var(--en-serif);
-      font-size: 17px;
-      font-weight: 500;
+      font-size: 19px;
+      font-weight: 600;
       line-height: 1.3;
       text-align: center;
     }
 
     .book .year {
       display: block;
-      margin-top: 5px;
+      margin-top: 2px;
       font-family: var(--en-serif);
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 400;
       line-height: 1.2;
       text-align: center;
@@ -334,8 +337,8 @@
 
     html[lang="zh-CN"] .book .title {
       font-family: var(--zh-serif);
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 18px;
+      font-weight: 600;
     }
 
     @media (max-width: 899px) {
@@ -345,7 +348,7 @@
       }
 
       .identity .en {
-        font-size: 25px;
+        font-size: 22px;
       }
 
       .identity .slash {
@@ -362,6 +365,18 @@
         max-width: calc(100vw - 32px);
       }
 
+      .icon-burger {
+        inset: auto;
+        top: 0;
+        right: 0;
+        width: 26px;
+        height: 18px;
+      }
+
+      .icon-burger span {
+        width: 26px;
+      }
+
       .menu-links {
         position: absolute;
         top: calc(22px * 1.1 + 6px + 12px * 1.1 - 19px * 1.1);
@@ -369,7 +384,7 @@
         margin-top: 0;
         flex-direction: row;
         align-items: flex-end;
-        font-size: 19px;
+        font-size: 17px;
         line-height: 1.1;
         font-weight: 400;
         gap: 14px;
@@ -396,11 +411,13 @@
       .lang {
         left: max(16px, env(safe-area-inset-left));
         bottom: max(16px, env(safe-area-inset-bottom));
+        font-size: 12px;
       }
 
       .credit {
         right: max(16px, env(safe-area-inset-right));
         bottom: max(16px, env(safe-area-inset-bottom));
+        font-size: 11px;
       }
 
       .track-window {
@@ -469,16 +486,16 @@
 
       .book .title {
         margin-top: 10px;
-        font-size: 18px;
+        font-size: 16px;
         overflow-wrap: break-word;
       }
 
       html[lang="zh-CN"] .book .title {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       .book .year {
-        font-size: 14px;
+        font-size: 12px;
       }
 
       html[lang="en"] .book .year {
@@ -490,7 +507,7 @@
 <body>
   <div class="page">
     <a class="identity" href="index.html" translate="no">
-      <span class="en">Jiudi</span><span class="slash">/</span><span class="zh">九地</span>
+      <span class="en">JIUDI</span><span class="slash">/</span><span class="zh">九地</span>
     </a>
 
     <div class="nav-block">

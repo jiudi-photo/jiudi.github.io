@@ -5,9 +5,10 @@
   <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Works — 九地 / JIUDI</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Noto+Serif+SC:wght@400;500;600&family=STIX+Two+Text:wght@400&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Regular/TaipeiSansTCBeta-Regular.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Bold/TaipeiSansTCBeta-Bold.css" rel="stylesheet">
   <style>
     :root {
       --paper: #F2F2EF;
@@ -15,10 +16,10 @@
       --ink-mute: rgba(21, 21, 21, 0.5);
       --thumb-w: clamp(430px, calc(91.8px + 28vw), 495px);
       --thumb-gap: 144px;
-      --zh: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
-      --zh-serif: "Source Han Serif CN", "Noto Serif SC", serif;
-      --en: "Avenir Next", Avenir, "Helvetica Neue", Helvetica, Arial, sans-serif;
-      --en-serif: "EB Garamond", Garamond, serif;
+      --zh: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --zh-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
     }
 
     * {
@@ -64,7 +65,7 @@
       flex-direction: row;
       flex-wrap: nowrap;
       align-items: baseline;
-      column-gap: calc(0.28em - 1px);
+      column-gap: calc(0.28em - 3px);
       width: max-content;
       white-space: nowrap;
       font-size: 28px;
@@ -77,18 +78,20 @@
 
     .identity .en,
     .identity .slash {
-      font-family: "STIX Two Text", "Times New Roman", serif;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
       font-weight: 400;
       letter-spacing: 0;
       line-height: 1;
     }
 
     .identity .en {
-      font-size: 27px;
+      font-size: 24px;
+      font-weight: 500;
     }
 
     .identity .slash {
       font-size: 24px;
+      font-weight: 500;
     }
 
     .identity .zh {
@@ -131,7 +134,7 @@
     .icon-burger span {
       display: block;
       width: 28px;
-      height: 1px;
+      height: 2px;
       background: var(--ink);
     }
 
@@ -213,7 +216,7 @@
       bottom: 32px;
       z-index: 20;
       font-family: var(--en-serif);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 500;
       letter-spacing: 0.06em;
     }
@@ -238,7 +241,7 @@
       bottom: 32px;
       z-index: 20;
       font-family: var(--en-serif);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 400;
       letter-spacing: 0.04em;
       opacity: 0.45;
@@ -292,7 +295,8 @@
       object-position: center;
       transform: scale(1);
       transform-origin: center center;
-      filter: grayscale(0);
+      filter: brightness(1);
+      -webkit-filter: brightness(1);
       transition: transform 0.35s ease;
     }
 
@@ -304,17 +308,17 @@
       display: block;
       margin-top: 15px;
       font-family: var(--en-serif);
-      font-size: 17px;
-      font-weight: 500;
+      font-size: 19px;
+      font-weight: 600;
       line-height: 1.3;
       text-align: left;
     }
 
     .work .year {
       display: block;
-      margin-top: 5px;
+      margin-top: 2px;
       font-family: var(--en-serif);
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 400;
       line-height: 1.2;
       text-align: left;
@@ -327,8 +331,8 @@
 
     html[lang="zh-CN"] .work .title {
       font-family: var(--zh-serif);
-      font-size: 15px;
-      font-weight: 500;
+      font-size: 18px;
+      font-weight: 600;
     }
 
     @media (max-width: 899px) {
@@ -338,7 +342,7 @@
       }
 
       .identity .en {
-        font-size: 25px;
+        font-size: 22px;
       }
 
       .identity .slash {
@@ -355,14 +359,28 @@
         max-width: calc(100vw - 32px);
       }
 
+      .icon-burger {
+        inset: auto;
+        top: 0;
+        right: 0;
+        width: 26px;
+        height: 18px;
+      }
+
+      .icon-burger span {
+        width: 26px;
+      }
+
       .lang {
         left: max(16px, env(safe-area-inset-left));
         bottom: max(16px, env(safe-area-inset-bottom));
+        font-size: 12px;
       }
 
       .credit {
         right: max(16px, env(safe-area-inset-right));
         bottom: max(16px, env(safe-area-inset-bottom));
+        font-size: 11px;
       }
 
       .menu-links {
@@ -372,7 +390,7 @@
         margin-top: 0;
         flex-direction: row;
         align-items: flex-end;
-        font-size: 19px;
+        font-size: 17px;
         line-height: 1.1;
         font-weight: 400;
         gap: 14px;
@@ -442,8 +460,8 @@
 
       .work:active .frame img,
       .work.is-press .frame img {
-        filter: grayscale(15%);
-        -webkit-filter: grayscale(15%);
+        filter: brightness(0.78);
+        -webkit-filter: brightness(0.78);
       }
 
       .work .title,
@@ -459,16 +477,16 @@
 
       .work .title {
         margin-top: 10px;
-        font-size: 18px;
+        font-size: 16px;
         overflow-wrap: break-word;
       }
 
       html[lang="zh-CN"] .work .title {
-        font-size: 16px;
+        font-size: 15px;
       }
 
       .work .year {
-        font-size: 14px;
+        font-size: 12px;
       }
     }
   </style>
@@ -476,7 +494,7 @@
 <body>
   <div class="page">
     <a class="identity" href="index.html" translate="no">
-      <span class="en">Jiudi</span><span class="slash">/</span><span class="zh">九地</span>
+      <span class="en">JIUDI</span><span class="slash">/</span><span class="zh">九地</span>
     </a>
 
     <div class="nav-block">
@@ -582,71 +600,68 @@
     (function bindCoverPress() {
       var startX = 0;
       var startY = 0;
+      var pressed = null;
+      var suppressClick = false;
 
-      function pressedCover(event) {
-        var touch = event.touches[0] || event.changedTouches[0];
-        if (!touch) {
-          return null;
-        }
+      function coverFromEvent(event) {
         var node = event.target;
         if (node && node.nodeType === 3) {
           node = node.parentElement;
         }
-        var work = node && node.closest ? node.closest(".work") : null;
-        if (!work) {
-          var hit = document.elementFromPoint(touch.clientX, touch.clientY);
-          work = hit && hit.closest ? hit.closest(".work") : null;
-        }
-        if (!work) {
-          return null;
-        }
-        var frame = work.querySelector(".frame");
-        if (!frame) {
-          return null;
-        }
-        var box = frame.getBoundingClientRect();
-        if (touch.clientX < box.left || touch.clientX > box.right || touch.clientY < box.top || touch.clientY > box.bottom) {
-          return null;
-        }
-        return work;
+        var frame = node && node.closest ? node.closest(".work .frame") : null;
+        return frame ? frame.closest(".work") : null;
       }
 
       function clearPress() {
+        if (pressed) {
+          pressed.classList.remove("is-press");
+          pressed = null;
+        }
         Array.prototype.forEach.call(document.querySelectorAll(".work.is-press"), function (cover) {
           cover.classList.remove("is-press");
         });
       }
 
-      trackWindow.addEventListener("touchstart", function (event) {
+      track.addEventListener("touchstart", function (event) {
         if (!window.matchMedia("(max-width: 899px)").matches || event.touches.length !== 1) {
           return;
         }
-        var cover = pressedCover(event);
+        var cover = coverFromEvent(event);
         if (!cover) {
           return;
         }
+        suppressClick = false;
         startX = event.touches[0].clientX;
         startY = event.touches[0].clientY;
+        pressed = cover;
         cover.classList.add("is-press");
-      }, { passive: true, capture: true });
+      }, { passive: true });
 
-      trackWindow.addEventListener("touchmove", function (event) {
-        if (event.touches.length !== 1) {
-          return;
-        }
-        var cover = event.target.closest ? event.target.closest(".work") : null;
-        if (!cover || !cover.classList.contains("is-press")) {
+      track.addEventListener("touchmove", function (event) {
+        if (!pressed || event.touches.length !== 1) {
           return;
         }
         var dx = event.touches[0].clientX - startX;
         var dy = event.touches[0].clientY - startY;
-        if (Math.abs(dx) > 16 && Math.abs(dx) >= Math.abs(dy)) {
-          cover.classList.remove("is-press");
+        if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+          if (Math.abs(dx) > 10) {
+            suppressClick = true;
+          }
+          pressed.classList.remove("is-press");
         }
-      }, { passive: true, capture: true });
+      }, { passive: true });
 
-      trackWindow.addEventListener("touchend", clearPress, { passive: true, capture: true });
-      trackWindow.addEventListener("touchcancel", clearPress, { passive: true, capture: true });
+      track.addEventListener("touchend", clearPress, { passive: true });
+      track.addEventListener("touchcancel", clearPress, { passive: true });
+
+      track.addEventListener("click", function (event) {
+        if (!suppressClick) {
+          return;
+        }
+        suppressClick = false;
+        event.preventDefault();
+        event.stopPropagation();
+      }, true);
     })();
 
     trackWindow.addEventListener("wheel", function (event) {
