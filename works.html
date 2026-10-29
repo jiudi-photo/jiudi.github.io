@@ -6,9 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Works — 九地 / JIUDI</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Regular/TaipeiSansTCBeta-Regular.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Bold/TaipeiSansTCBeta-Bold.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet"></noscript>
   <style>
     :root {
       --paper: #F2F2EF;
@@ -531,12 +532,12 @@
     var LANG_KEY = "jiudi-lang";
 
     var PROJECTS = [
-      { slug: "bouyei", image: "images/works/Bouyei.jpg", zh: "布依", en: "Bouyei", year: "2020–2024" },
-      { slug: "golden-bridge", image: "images/works/golden-bridge.jpg", zh: "金桥", en: "Golden Bridge", year: "2016–2024" },
-      { slug: "cronica", image: "images/works/cronica.jpg", zh: "一场事先张扬的凶杀案", en: "Crónica de una muerte anunciada", year: "2022" },
-      { slug: "yoyo", image: "images/works/yoyo.jpg", zh: "幽幽", en: "YoYo", year: "2021" },
-      { slug: "still-life", image: "images/works/Still Life.jpg", zh: "静物", en: "Still Life", year: "2025" },
-      { slug: "beautiful-germs", image: "images/works/beautiful-germs.jpg", zh: "美丽的细菌", en: "The Beautiful Germs", year: "2014–2021" }
+      { slug: "over-and-over", image: "images-web/works/Over and Over.jpg", zh: "习以为常", en: "Over and Over", year: "2020–2024" },
+      { slug: "golden-bridge", image: "images-web/works/golden-bridge.jpg", zh: "金桥", en: "Golden Bridge", year: "2016–2024" },
+      { slug: "cronica", image: "images-web/works/cronica.jpg", zh: "一场事先张扬的凶杀案", en: "Crónica de una muerte anunciada", year: "2022" },
+      { slug: "yoyo", image: "images-web/works/yoyo.jpg", zh: "幽幽", en: "YoYo", year: "2021" },
+      { slug: "still-life", image: "images-web/works/Still Life.jpg", zh: "静物", en: "Still Life", year: "2025" },
+      { slug: "beautiful-germs", image: "images-web/works/beautiful-germs.jpg", zh: "美丽的细菌", en: "The Beautiful Germs", year: "2014–2021" }
     ];
 
     var track = document.querySelector(".track");
@@ -569,8 +570,8 @@
       item.className = "work";
       item.href = "viewer.html?project=" + encodeURIComponent(project.slug);
       item.dataset.slug = project.slug;
-      item.innerHTML = '<span class="frame"><img alt=""></span><span class="title"></span><span class="year"></span>';
-      item.querySelector("img").src = encodeURI(project.image) + "?v=2";
+      item.innerHTML = '<span class="frame"><img alt="" loading="lazy" decoding="async"></span><span class="title"></span><span class="year"></span>';
+      item.querySelector("img").src = encodeURI(project.image);
       item.querySelector(".year").textContent = project.year;
       track.appendChild(item);
     });

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Regular/TaipeiSansTCBeta-Regular.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Bold/TaipeiSansTCBeta-Bold.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet"></noscript>
+  <title>习以为常 — 九地 / JIUDI</title>
+  <style>
+    :root {
+      --paper: #F2F2EF;
+      --paper-sheet: #F8F8F5;
+      --ink: #151515;
+      --ink-mute: rgba(21, 21, 21, 0.5);
+      --zh: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --zh-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --en-serif: "Helvetica Neue", Helvetica, Arial, "Taipei Sans TC", sans-serif;
+      --cols: 4;
+      --gap-x: 14px;
+      --gap-y: 18px;
+      --safe-bottom: 10vh;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--en-serif);
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a,
+    button {
+      color: inherit;
+      font: inherit;
+      background: none;
+      border: 0;
+      padding: 0;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .back {
+      position: fixed;
+      top: 28px;
+      left: 36px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      opacity: 0.82;
+    }
+
+    .back-mark {
+      font-weight: 600;
+    }
+
+    .back:hover {
+      opacity: 1;
+    }
+
+    .lang {
+      position: fixed;
+      left: 36px;
+      bottom: 32px;
+      z-index: 20;
+      font-family: var(--en-serif);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+    }
+
+    .lang button {
+      opacity: 0.35;
+    }
+
+    .lang button.is-on {
+      opacity: 0.9;
+    }
+
+    .lang .sep {
+      opacity: 0.35;
+      margin: 0 6px;
+      pointer-events: none;
+    }
+
+    .scroll {
+      position: absolute;
+      top: 100px;
+      left: 0;
+      right: 0;
+      bottom: var(--safe-bottom);
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: auto;
+    }
+
+    .layout {
+      display: flex;
+      align-items: flex-start;
+      gap: 5vw;
+      padding: 0 36px 28px 36px;
+    }
+
+    .meta {
+      position: sticky;
+      top: 0;
+      flex: 0 0 12vw;
+      min-width: 140px;
+    }
+
+    .meta .title {
+      margin: 0;
+      font-size: 23px;
+      font-weight: 600;
+      line-height: 1.3;
+      font-family: var(--en-serif);
+    }
+
+    html[lang="zh-CN"] .meta .title {
+      font-family: var(--zh-serif);
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    html[lang="en"] .meta .title {
+      font-family: var(--en-serif);
+      font-size: 23px;
+      font-weight: 600;
+    }
+
+    .meta .year {
+      display: block;
+      margin-top: 2px;
+      font-family: var(--en-serif);
+      font-size: 16px;
+      font-weight: 400;
+      opacity: 0.55;
+    }
+
+    .meta .info-btn {
+      display: block;
+      margin-top: 8px;
+      font-family: var(--en-serif);
+      font-size: 17px;
+      font-weight: 500;
+      opacity: 0.7;
+    }
+
+    html[lang="zh-CN"] .meta .info-btn {
+      font-family: var(--zh-serif);
+      font-size: 17px;
+      font-weight: 500;
+    }
+
+    .meta .info-btn:hover {
+      opacity: 1;
+    }
+
+    .mode-switch {
+      margin-top: 44px;
+      font-family: var(--en-serif);
+      font-size: 15px;
+      letter-spacing: 0.04em;
+    }
+
+    .mode-switch a {
+      font-weight: 400;
+      opacity: 0.38;
+      text-decoration: none;
+      transition: opacity 180ms ease;
+    }
+
+    .mode-switch a + a {
+      margin-left: 1.15em;
+    }
+
+    .mode-switch a.is-on {
+      font-weight: 500;
+      opacity: 0.92;
+    }
+
+    .mode-switch a:hover {
+      opacity: 1;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      column-gap: var(--gap-x);
+      row-gap: var(--gap-y);
+      max-width: 84vw;
+      flex: 1 1 auto;
+    }
+
+    .cell {
+      container-type: size;
+      flex: 0 0 auto;
+      width: calc((100% - (var(--cols) - 1) * var(--gap-x)) / var(--cols));
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      outline: none;
+    }
+
+    .shot {
+      position: relative;
+      display: block;
+      line-height: 0;
+      cursor: pointer;
+    }
+
+    .shot img {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100cqw;
+      max-height: 100cqh;
+      object-fit: contain;
+      object-position: center;
+      filter: brightness(1) contrast(1) saturate(1);
+      transition: filter 0.25s ease;
+    }
+
+    .shot::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(242, 242, 239, 0.16);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .shot:hover img {
+      filter: brightness(1.06) contrast(0.94) saturate(0.92);
+    }
+
+    .shot:hover::after {
+      opacity: 1;
+    }
+
+    .info-panel {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      z-index: 30;
+      width: min(430px, calc(100vw - 48px));
+      max-height: 65vh;
+      overflow: auto;
+      transform: translate(-50%, -50%);
+      background: var(--paper-sheet);
+      padding: 40px;
+      box-shadow: 0 1px 0 rgba(21, 21, 21, 0.06);
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, visibility 0.18s ease;
+    }
+
+    .info-panel.is-open {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .info-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 13px;
+      height: 13px;
+      opacity: 0.2;
+    }
+
+    .info-close:hover {
+      opacity: 0.5;
+    }
+
+    .info-close span {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 13px;
+      height: 1px;
+      background: var(--ink);
+    }
+
+    .info-close span:first-child {
+      transform: rotate(45deg);
+    }
+
+    .info-close span:last-child {
+      transform: rotate(-45deg);
+    }
+
+    .info-body {
+      font-family: var(--en-serif);
+    }
+
+    .info-body p {
+      margin: 0 0 1.15em;
+      font-size: 15px;
+      line-height: 1.75;
+      font-weight: 400;
+      text-align: left;
+    }
+
+    html[lang="zh-CN"] .info-body {
+      font-family: var(--zh-serif);
+    }
+
+    html[lang="zh-CN"] .info-body p {
+      font-size: 13px;
+      font-weight: 300;
+      text-align: justify;
+    }
+
+    html[lang="en"] .info-body {
+      font-family: var(--en-serif);
+    }
+
+    html[lang="en"] .info-body p {
+      font-size: 15px;
+      font-weight: 400;
+    }
+
+    .info-body p:last-child {
+      margin-bottom: 0;
+    }
+
+
+    @media (min-width: 900px) {
+      .scroll {
+        top: 28px;
+        bottom: 32px;
+      }
+
+      .layout {
+        padding-bottom: 0;
+      }
+
+      .meta {
+        top: 72px;
+        margin-top: 72px;
+      }
+
+    }
+
+    @media (max-width: 1279px) {
+      :root {
+        --cols: 3;
+      }
+    }
+
+    @media (max-width: 1099px) {
+      :root {
+        --cols: 2;
+      }
+    }
+
+    .counter {
+      display: none;
+    }
+
+    @media (max-width: 899px) {
+      :root {
+        --cols: 2;
+        --gap-x: 12px;
+        --gap-y: 10px;
+      }
+
+      .back {
+        top: max(16px, env(safe-area-inset-top));
+        left: max(16px, env(safe-area-inset-left));
+        font-size: 13px;
+      }
+
+      .lang {
+        left: max(16px, env(safe-area-inset-left));
+        bottom: max(16px, env(safe-area-inset-bottom));
+        font-size: 12px;
+      }
+
+      .meta .title {
+        font-size: 21px;
+      }
+
+      html[lang="zh-CN"] .meta .title {
+        font-size: 20px;
+      }
+
+      html[lang="en"] .meta .title {
+        font-size: 21px;
+      }
+
+      .meta .year {
+        font-size: 14px;
+      }
+
+      .meta .info-btn,
+      html[lang="zh-CN"] .meta .info-btn {
+        font-size: 15px;
+      }
+
+      .mode-switch {
+        font-size: 13px;
+      }
+
+      .counter {
+        font-size: 13px;
+      }
+
+      .info-body p,
+      html[lang="en"] .info-body p {
+        font-size: 14px;
+      }
+
+      html[lang="zh-CN"] .info-body p {
+        font-size: 12px;
+      }
+
+      .scroll {
+        top: calc(40px + env(safe-area-inset-top));
+        bottom: calc(44px + env(safe-area-inset-bottom));
+      }
+
+      .layout {
+        flex-direction: column;
+        gap: 24px;
+        padding: 0 16px 20px;
+      }
+
+      .meta {
+        position: relative;
+        top: auto;
+        width: 100%;
+        min-width: 0;
+        flex: none;
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: auto auto auto 1fr auto;
+        grid-template-rows: auto auto auto;
+        align-items: start;
+        column-gap: 1.15em;
+        row-gap: 0;
+      }
+
+      .meta .title {
+        grid-column: 1 / 5;
+        grid-row: 1;
+      }
+
+      .meta .year {
+        grid-column: 1 / 5;
+        grid-row: 2;
+      }
+
+      .meta .info-btn {
+        grid-column: 5;
+        grid-row: 1 / span 2;
+        margin-top: 0;
+        justify-self: end;
+        align-self: start;
+      }
+
+      .mode-switch {
+        display: contents;
+      }
+
+      .mode-switch a {
+        grid-row: 3;
+        margin-top: 8px;
+        margin-left: 0;
+        white-space: nowrap;
+        align-self: baseline;
+      }
+
+      .mode-switch a + a {
+        margin-left: 0;
+      }
+
+      .mode-switch a:nth-child(1) {
+        grid-column: 1;
+      }
+
+      .mode-switch a:nth-child(2) {
+        grid-column: 2;
+      }
+
+      .counter {
+        display: none;
+      }
+
+      .gallery {
+        max-width: none;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="back" href="../works.html" translate="no"><span class="back-mark">&lt;</span> Back</a>
+
+  <div class="lang">
+    <button type="button" data-lang="cn">CN</button><span class="sep">/</span><button type="button" data-lang="en">EN</button>
+  </div>
+
+
+  <div class="scroll">
+    <div class="layout">
+      <aside class="meta">
+        <h1 class="title"></h1>
+        <span class="year">2020–2024</span>
+        <button class="info-btn" type="button"></button>
+        <div class="mode-switch">
+          <a class="mode" href="../viewer.html?project=over-and-over">Gallery</a>
+          <a class="mode is-on" href="#">Index</a>
+        </div>
+        <span class="counter">01 / 01</span>
+      </aside>
+      <div class="gallery"></div>
+    </div>
+  </div>
+
+  <div class="info-panel">
+    <button class="info-close" type="button" aria-label="Close">
+      <span></span>
+      <span></span>
+    </button>
+    <div class="info-body"></div>
+  </div>
+
+  <script>
+    var LANG_KEY = "jiudi-lang";
+    var IMAGE_DIR = "../images-web/works/over-and-over/";
+
+    var INFO = {
+      cn: [
+        "这组作品记录了我布依族家庭中的三场乡村葬礼。2020年至2022年间，亲人相继离世，我回到位于中国贵州的家乡，拍摄了这些仪式，探索了民族文化、乡村习俗、死亡以及身份认同。",
+        "2020年至2022年间，接连三次面对外公、外婆和爷爷的离世。这让我感到恐慌，也让我意识到，死亡离我们每个人都很近。我们需要一次次地学习面对它，直到不再害怕，而摄影就是我学习面对死亡的方式。这是作品名「习以为常」的重要来源之一。本作品的中文标题是「习以为常」在中文里，“习以为常”指一件事物因反复出现而逐渐变得平常。",
+        "作为一名已经汉化的布依族人，我与父母的农村老家长期保持着距离。因葬礼回到那里时，我感到熟悉，却又陌生。我拿起相机，记录并观看周围的一切。最初，我并不清楚自己的立场和视角，只是凭直觉拍摄。作为家属，我既要帮忙、参与葬礼的各项事务，又要完成拍摄，这让我获得了许多不同的体验。",
+        "到了第二场葬礼，我开始有意识地尝试更多视角。三场葬礼结束后，我发现这组作品带给我一个重要的启示：我原本在日常生活中淡忘的布依族身份，其背后有许多仍在延续的事物。在布依村寨，与布依族相关的一切仍在持续运作，哪怕其中许多事物早已不再令人感到新奇。我渐渐意识到，拿起相机并没有让我成为家族的旁观者，因为我本来就是其中的一员。我的存在，以及我通过摄影观看和记录的行为，本身也是布依族汉化过程所形成的当代经验的一部分。作为拍摄者，我既是这一过程的观察者，也身处其中。拍摄让我重新靠近那些原本熟悉、却未必真正理解的事物，也让我意识到，有些事情之所以不再引起注意，并不意味着它们不再重要。这是作品名「习以为常」的第二层含义。",
+        "这组作品还有另一个重要意义：我希望人们不仅能看见一种地方文化对待死亡的方式，也能看见少数民族在当代的生活。他们并未被过去冻结，也不应被刻板印象所定义，而是在不断变化的现实中延续自身的生活。通过葬礼纪实，我看到了许多仍被保留下来的习俗，比如送山——人们排成长队，将逝者的棺材送进山中安葬；芦笙送魂曲；以及女性参与的哭丧仪式等。我也看到了当地人与竹子、树木等自然事物之间的信仰联系。",
+        "本次展示的是从近120张照片中编辑而成的版本。除了民族习俗和葬礼流程，完整版还包含许多葬礼中的乡村日常生活影像，其中一些照片呈现了当地人面对死亡时如同面对日常的态度。这也是我通过摄影逐渐发现的：当地人们频繁参与彼此的红白喜事，在相互帮忙、共同完成葬礼事务的过程中，对死亡有着更直接的接触和更丰富的经验，死亡也因此成为他们日常生活的一部分。这是作品名《习以为常》的另一个重要来源。",
+        "对我来说，这些熟悉的事物在拍摄过程中逐渐显露出陌生的一面。它包含着震动，以及重新理解自身文化的过程。"
+      ],
+      en: [
+        "This work documents three rural funerals in my Bouyei family. After three family members passed away within two years, I returned to my hometown in Guizhou, China, to photograph these rituals and explore ethnic culture, rural customs, death, and identity.",
+        "Between 2020 and 2022, I faced the successive deaths of my maternal grandparents and paternal grandfather.These losses filled me with fear and made me realize how close death is to each of us. We must learn to face it over and over, until we are no longer afraid. Photography became my way of learning to face death. This was one of the key inspirations behind the title Over and Over. The Chinese title of this work is 习以为常 (xí yǐ wéi cháng), a phrase that describes how something gradually comes to seem ordinary through repetition.",
+        "As a Bouyei person raised in a predominantly Han Chinese cultural environment, I have long felt a distance from my parents' rural hometown. Returning there for the funerals, I found the place both familiar and unfamiliar. I picked up my camera to record and observe everything around me. At first, I was unsure of my own position and perspective, photographing largely by instinct. As a family member, I had to help with the funeral arrangements and participate in the rituals while also photographing them. This gave me a range of experiences and perspectives.",
+        "By the second funeral, I had begun to consciously explore different viewpoints. After all three funerals, I came to an important realization: behind the Bouyei identity I had gradually lost sight of in everyday life, many cultural practices and ways of living continued to endure. In Bouyei villages, life connected to Bouyei culture continued as before, even when much of it no longer seemed remarkable. I gradually realized that picking up a camera had not made me an outsider to my family, because I had always been part of it. My existence, and my act of observing and documenting through photography, are themselves part of the contemporary experience of being Bouyei within a predominantly Han Chinese way of life. As a photographer, I observe this process while remaining part of it. Photography has brought me closer to things that were once familiar to me but that I had not necessarily understood. It has also made me realize that just because something no longer draws our attention does not mean it has lost its significance. This is the second layer of meaning behind the title Over and Over.",
+        "Another important purpose of this work is to show not only how a local culture approaches death, but also how an ethnic minority lives in the present. The Bouyei are neither frozen in the past nor defined by stereotypes; their lives and culture continue to evolve. Through documenting these funerals, I encountered many customs that remain alive, including Songshan, a funeral procession in which people form a long line to carry the deceased's coffin into the mountains for burial; lusheng funeral music, performed by local folk musicians who play farewell melodies to accompany the deceased on their final journey; and ritual lamentation performed by women. I also observed local beliefs associated with natural elements such as bamboo and trees.",
+        "This presentation is an edited selection from nearly 120 photographs. Beyond ethnic customs and funeral rituals, the complete work includes many images of everyday rural life during the funerals. Some show how people respond to death as though it were part of ordinary life. The local people are deeply familiar with death through their frequent participation in one another's celebrations and funerals. They help each other and work together to carry out the many tasks required for a funeral. Through these shared experiences, death becomes an ordinary part of their lives. This is another important source of the title Over and Over.",
+        "For me, photographing these familiar things gradually revealed aspects of them that I had not previously recognized. The experience deeply affected me and led me to reconsider my own culture."
+      ]
+    };
+
+    var titleEl = document.querySelector(".meta .title");
+    var infoBtn = document.querySelector(".info-btn");
+    var gallery = document.querySelector(".gallery");
+    var panel = document.querySelector(".info-panel");
+    var infoBody = document.querySelector(".info-body");
+    var infoClose = document.querySelector(".info-close");
+    var langButtons = Array.prototype.slice.call(document.querySelectorAll(".lang button"));
+
+    function currentLang() {
+      return localStorage.getItem(LANG_KEY) === "en" ? "en" : "cn";
+    }
+
+    function renderInfo(lang) {
+      var blocks = INFO[lang] || INFO.cn;
+      infoBody.innerHTML = "";
+      blocks.forEach(function (block) {
+        var p = document.createElement("p");
+        p.textContent = block;
+        infoBody.appendChild(p);
+      });
+    }
+
+    function applyLang(lang) {
+      localStorage.setItem(LANG_KEY, lang);
+      document.documentElement.lang = lang === "en" ? "en" : "zh-CN";
+      document.title = (lang === "en" ? "Over and Over" : "习以为常") + " — 九地 / JIUDI";
+      titleEl.textContent = lang === "en" ? "Over and Over" : "习以为常";
+      infoBtn.textContent = lang === "en" ? "Info" : "简介";
+
+      Array.prototype.forEach.call(document.querySelectorAll(".mode-switch a.is-on"), function (link) {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+      });
+    });
+
+    langButtons.forEach(function (button) {
+        button.classList.toggle("is-on", button.getAttribute("data-lang") === lang);
+      });
+
+      renderInfo(lang);
+    }
+
+    var FILES = [
+        "01.jpg",
+        "02.jpg",
+        "03.jpg",
+        "04.jpg",
+        "05.jpg",
+        "06.jpg",
+        "07.jpg",
+        "08.jpg",
+        "09.jpg",
+        "10.jpg",
+        "11.jpg",
+        "12.jpg",
+        "13.jpg",
+        "14.jpg",
+        "15.jpg",
+        "16.jpg",
+        "17.jpg",
+        "18.jpg",
+        "19.jpg",
+        "20.jpg",
+        "21.jpg",
+        "22.jpg",
+        "23.jpg",
+        "24.jpg",
+        "25.jpg",
+        "26.jpg",
+        "27.jpg",
+        "28.jpg",
+        "29.jpg",
+        "30.jpg",
+        "31.jpg",
+        "32.jpg",
+        "33.jpg"
+    ];
+
+    function pad(n) {
+      return n < 10 ? "0" + n : String(n);
+    }
+
+    function loadImages() {
+      FILES.forEach(function (file) {
+        var cell = document.createElement("div");
+        var link = document.createElement("a");
+        var img = document.createElement("img");
+        cell.className = "cell";
+        link.className = "shot";
+        link.href = "../viewer.html?project=over-and-over&image=" + encodeURIComponent(file);
+        img.src = IMAGE_DIR + file;
+        img.alt = "";
+        img.loading = "lazy";
+        link.appendChild(img);
+        cell.appendChild(link);
+        gallery.appendChild(cell);
+      });
+      var counterEl = document.querySelector(".counter");
+      if (counterEl) {
+        var n = FILES.length || 1;
+        counterEl.textContent = "01 / " + pad(n);
+      }
+    }
+
+    function openInfo() {
+      renderInfo(currentLang());
+      panel.classList.add("is-open");
+    }
+
+    function closeInfo() {
+      panel.classList.remove("is-open");
+    }
+
+    infoBtn.addEventListener("click", function (event) {
+      event.stopPropagation();
+      if (panel.classList.contains("is-open")) {
+        closeInfo();
+      } else {
+        openInfo();
+      }
+    });
+
+    infoClose.addEventListener("click", function (event) {
+      event.stopPropagation();
+      closeInfo();
+    });
+
+    panel.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+
+    document.addEventListener("click", function () {
+      if (panel.classList.contains("is-open")) {
+        closeInfo();
+      }
+    });
+
+    langButtons.forEach(function (button) {
+      button.addEventListener("click", function () {
+        applyLang(button.getAttribute("data-lang"));
+      });
+    });
+
+    applyLang(currentLang());
+    loadImages();
+  </script>
+</body>
+</html>

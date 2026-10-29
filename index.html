@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>九地 / JIUDI</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Regular/TaipeiSansTCBeta-Regular.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Bold/TaipeiSansTCBeta-Bold.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet"></noscript>
   <style>
     :root {
       --fade: 0.8s;
@@ -437,7 +438,7 @@
 <body>
   <div class="stage">
     <div class="slides" aria-hidden="true">
-      <img class="layer is-on" src="images/home/home-01.jpg" alt="">
+      <img class="layer is-on" alt="">
       <img class="layer" alt="">
     </div>
 
@@ -487,30 +488,30 @@
     const MOBILE_MQ = "(max-width: 899px)";
 
     const WORKS = [
-      { src: "images/home/home-01.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" },
-      { src: "images/home/home-02.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
-      { src: "images/home/home-03.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
-      { src: "images/home/home-04.jpg", title: "幽幽", year: "2021", slug: "youyou" },
-      { src: "images/home/home-05.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
-      { src: "images/home/home-06.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
-      { src: "images/home/home-07.jpg", title: "幽幽", year: "2021", slug: "youyou" },
-      { src: "images/home/home-08.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" },
-      { src: "images/home/home-09.jpg?v=2", title: "布依", year: "2020–2024", slug: "bouyei" },
-      { src: "images/home/home-10.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
-      { src: "images/home/home-11.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" }
+      { src: "images-web/home/home-01.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" },
+      { src: "images-web/home/home-02.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images-web/home/home-03.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images-web/home/home-04.jpg", title: "幽幽", year: "2021", slug: "youyou" },
+      { src: "images-web/home/home-05.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images-web/home/home-06.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images-web/home/home-07.jpg", title: "幽幽", year: "2021", slug: "youyou" },
+      { src: "images-web/home/home-08.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" },
+      { src: "images-web/home/home-09.jpg", title: "习以为常", year: "2020–2024", slug: "over-and-over" },
+      { src: "images-web/home/home-10.jpg", title: "金桥", year: "2016–2024", slug: "jinqiao" },
+      { src: "images-web/home/home-11.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "xiongsan" }
     ];
 
     const WORKS_MOBILE = [
-      { src: "images/home-mobile/01.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "cronica" },
-      { src: "images/home-mobile/02.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
-      { src: "images/home-mobile/03.jpg", title: "幽幽", year: "2021", slug: "yoyo" },
-      { src: "images/home-mobile/04.jpg", title: "静物", year: "2025", slug: "still-life" },
-      { src: "images/home-mobile/05.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
-      { src: "images/home-mobile/06.jpg", title: "布依", year: "2020–2024", slug: "bouyei" },
-      { src: "images/home-mobile/07.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
-      { src: "images/home-mobile/08.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
-      { src: "images/home-mobile/09.jpg", title: "美丽的细菌", year: "2014–2021", slug: "beautiful-germs" },
-      { src: "images/home-mobile/10.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" }
+      { src: "images-web/home-mobile/01.jpg", title: "一场事先张扬的凶杀案", year: "2022", slug: "cronica" },
+      { src: "images-web/home-mobile/02.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
+      { src: "images-web/home-mobile/03.jpg", title: "幽幽", year: "2021", slug: "yoyo" },
+      { src: "images-web/home-mobile/04.jpg", title: "静物", year: "2025", slug: "still-life" },
+      { src: "images-web/home-mobile/05.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
+      { src: "images-web/home-mobile/06.jpg", title: "习以为常", year: "2020–2024", slug: "over-and-over" },
+      { src: "images-web/home-mobile/07.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
+      { src: "images-web/home-mobile/08.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" },
+      { src: "images-web/home-mobile/09.jpg", title: "美丽的细菌", year: "2014–2021", slug: "beautiful-germs" },
+      { src: "images-web/home-mobile/10.jpg", title: "金桥", year: "2016–2024", slug: "golden-bridge" }
     ];
 
     const stage = document.querySelector(".stage");
@@ -541,11 +542,14 @@
       return isMobile() && navBlock.classList.contains("is-open");
     }
 
-    function preloadCurrent() {
-      currentSlides().forEach(function (work) {
-        const preload = new Image();
-        preload.src = work.src;
-      });
+    function preloadNext(index) {
+      const list = currentSlides();
+      if (!list.length) {
+        return;
+      }
+      const next = list[(index + 1) % list.length];
+      const preload = new Image();
+      preload.src = next.src;
     }
 
     function updateCaption(work) {
@@ -593,6 +597,7 @@
         front = 1 - front;
         currentIndex = index;
         updateCaption(work);
+        preloadNext(currentIndex);
 
         setTimeout(function () {
           busy = false;
@@ -637,7 +642,7 @@
       layers[0].src = list[0].src;
       layers[1].removeAttribute("src");
       updateCaption(list[0]);
-      preloadCurrent();
+      preloadNext(currentIndex);
       if (isMobile() && navBlock.classList.contains("is-open")) {
         stage.classList.add("is-menu-open");
       } else {
@@ -690,7 +695,7 @@
 
     layers[0].src = currentSlides()[0].src;
     updateCaption(currentSlides()[0]);
-    preloadCurrent();
+    preloadNext(currentIndex);
     scheduleNext();
   </script>
 </body>

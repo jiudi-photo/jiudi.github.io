@@ -6,9 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Books — 九地 / JIUDI</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Regular/TaipeiSansTCBeta-Regular.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Bold/TaipeiSansTCBeta-Bold.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet"></noscript>
   <style>
     :root {
       --paper: #F2F2EF;
@@ -544,7 +545,7 @@
     var LANG_KEY = "jiudi-lang";
 
     var BOOKS = [
-      { slug: "golden-bridge", image: "images/books/golden-bridge.jpg", zh: "金桥", en: "Golden Bridge", year: "2024", href: "books/golden-bridge.html" }
+      { slug: "golden-bridge", image: "images-web/books/golden-bridge.jpg", zh: "金桥", en: "Golden Bridge", year: "2024", href: "books/golden-bridge.html" }
     ];
 
     var track = document.querySelector(".track");
@@ -576,7 +577,7 @@
       var item = document.createElement("a");
       item.className = "book";
       item.dataset.slug = book.slug;
-      item.innerHTML = '<span class="frame"><img alt=""></span><span class="title"></span>';
+      item.innerHTML = '<span class="frame"><img alt="" loading="lazy" decoding="async"></span><span class="title"></span>';
       item.querySelector("img").src = book.image;
       if (book.year) {
         var year = document.createElement("span");

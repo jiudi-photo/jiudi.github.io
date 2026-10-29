@@ -6,9 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>金桥 — 九地 / JIUDI</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Regular/TaipeiSansTCBeta-Regular.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Bold/TaipeiSansTCBeta-Bold.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link href="https://cdn.jsdelivr.net/npm/@vp-tw/taipei-sans-tc@0.2.0/dist/Light/TaipeiSansTCBeta-Light.css" rel="stylesheet"></noscript>
   <style>
     :root {
       --paper: #F2F2EF;
@@ -603,10 +604,23 @@
 
   <script>
     var LANG_KEY = "jiudi-lang";
-    var IMAGE_DIR = "../images/books/golden-bridge/";
+    var IMAGE_DIR = "../images-web/books/golden-bridge/";
     var HOLD_MS = 4000;
     var FADE_MS = 700;
-    var MAX_IMAGES = 99;
+    var FILES = [
+      "01.jpg",
+      "02.jpg",
+      "03.jpg",
+      "04.jpg",
+      "05.jpg",
+      "06.jpg",
+      "07.jpg",
+      "08.jpg",
+      "09.jpg",
+      "10.jpg",
+      "11.jpg",
+      "12.jpg"
+    ];
 
     var INFO = {
       cn: [
@@ -787,30 +801,7 @@
     }
 
     function loadImages(done) {
-      var pendingCount = MAX_IMAGES;
-      var found = [];
-
-      function finish() {
-        pendingCount -= 1;
-        if (pendingCount > 0) {
-          return;
-        }
-        found.sort();
-        done(found);
-      }
-
-      for (var i = 1; i <= MAX_IMAGES; i++) {
-        (function (n) {
-          var file = pad(n) + ".jpg";
-          var test = new Image();
-          test.onload = function () {
-            found.push(file);
-            finish();
-          };
-          test.onerror = finish;
-          test.src = IMAGE_DIR + file;
-        })(i);
-      }
+      done(FILES.slice());
     }
 
     var prevHit = document.querySelector(".hit-prev");
