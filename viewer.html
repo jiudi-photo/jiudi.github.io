@@ -213,7 +213,11 @@
       min-height: 50vh;
     }
 
-    .stage img {
+    .stage-sizer {
+      display: none;
+    }
+
+    .stage img.layer {
       position: absolute;
       inset: 0;
       display: block;
@@ -226,7 +230,7 @@
       transition: opacity var(--image-fade) ease;
     }
 
-    .stage img.is-on {
+    .stage img.layer.is-on {
       opacity: 1;
     }
 
@@ -252,6 +256,10 @@
 
     .hit.is-off {
       cursor: default;
+    }
+
+    .nav-hint {
+      display: none;
     }
 
     .hit:focus,
@@ -523,21 +531,30 @@
         -webkit-tap-highlight-color: transparent;
       }
 
-      .stage img {
-        position: absolute;
-        inset: auto;
-        left: 0;
-        top: 0;
+      .stage-sizer {
+        display: block;
+        position: relative;
         width: 100%;
         height: auto;
+        visibility: hidden;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .stage img.layer {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
         max-width: 100%;
         object-fit: contain;
         object-position: center;
         -webkit-tap-highlight-color: transparent;
+        transition: opacity var(--image-fade) ease, filter 0.2s ease;
       }
 
-      .stage img.is-on {
-        position: relative;
+      .stage img.layer.is-on {
+        transition: opacity var(--image-fade) ease, filter 0.2s ease;
       }
 
       .hit {
@@ -545,6 +562,77 @@
         -webkit-tap-highlight-color: transparent;
         -webkit-appearance: none;
         appearance: none;
+      }
+
+      .hit,
+      .hit:active,
+      .hit:focus,
+      .hit:focus-visible {
+        background: none;
+        outline: none;
+        box-shadow: none;
+      }
+
+      .stage.is-dragging img.layer.is-on {
+        transition: none;
+      }
+
+      .stage.is-settling img.layer.is-on {
+        transition: transform 0.2s ease, filter 0.2s ease;
+      }
+
+      .stage.is-committing img.layer {
+        transition: opacity 0.3s ease, transform 0.3s ease, filter 0.2s ease;
+      }
+
+      .stage.is-tap img.layer.is-on {
+        filter: brightness(0.9);
+      }
+
+      .nav-hint {
+        display: block;
+        position: absolute;
+        top: 50%;
+        z-index: 3;
+        width: 18px;
+        height: 18px;
+        margin-top: -9px;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.38s ease;
+      }
+
+      .nav-hint.is-on {
+        opacity: 0.42;
+        transition: opacity 0.12s ease;
+      }
+
+      .nav-hint-prev {
+        left: 8px;
+      }
+
+      .nav-hint-next {
+        right: 8px;
+      }
+
+      .nav-hint::before {
+        content: "";
+        display: block;
+        width: 9px;
+        height: 9px;
+        border-left: 1.5px solid var(--ink);
+        border-bottom: 1.5px solid var(--ink);
+        background: none;
+      }
+
+      .nav-hint-prev::before {
+        margin: 4px 0 0 5px;
+        transform: rotate(45deg);
+      }
+
+      .nav-hint-next::before {
+        margin: 4px 0 0 2px;
+        transform: rotate(-135deg);
       }
     }
   </style>
@@ -569,8 +657,11 @@
         <span class="counter">01 / 01</span>
       </aside>
       <div class="stage">
-        <img alt="">
-        <img alt="">
+        <img class="stage-sizer" alt="" aria-hidden="true">
+        <img class="layer" alt="">
+        <img class="layer" alt="">
+        <span class="nav-hint nav-hint-prev" aria-hidden="true"></span>
+        <span class="nav-hint nav-hint-next" aria-hidden="true"></span>
         <button class="hit hit-prev" type="button" aria-label="Previous"></button>
         <button class="hit hit-next" type="button" aria-label="Next"></button>
       </div>
@@ -1035,13 +1126,15 @@
     var infoBody = document.querySelector(".info-body");
     var infoClose = document.querySelector(".info-close");
     var langButtons = Array.prototype.slice.call(document.querySelectorAll(".lang button"));
-    var layers = Array.prototype.slice.call(document.querySelectorAll(".stage img"));
+    var layers = Array.prototype.slice.call(document.querySelectorAll(".stage img.layer"));
+    var sizer = document.querySelector(".stage-sizer");
     var prevHit = document.querySelector(".hit-prev");
     var nextHit = document.querySelector(".hit-next");
 
     var files = [];
     var index = 0;
     var front = 0;
+    var showGen = 0;
 
     yearEl.textContent = config.year;
     indexLink.href = config.back;
@@ -1093,12 +1186,24 @@
 
       index = nextIndex;
       var file = files[index];
+      var outgoing = layers[front];
       var incoming = layers[1 - front];
       var src = config.dir + file;
+      var gen = ++showGen;
 
       function reveal() {
+        if (gen !== showGen) {
+          return;
+        }
+        incoming.style.transform = "";
+        if (!stageEl.classList.contains("is-committing")) {
+          outgoing.style.transform = "";
+        }
+        if (sizer) {
+          sizer.src = src;
+        }
         incoming.classList.add("is-on");
-        layers[front].classList.remove("is-on");
+        outgoing.classList.remove("is-on");
         front = 1 - front;
         updateCounter();
         if (window.history && window.history.replaceState) {
@@ -1112,16 +1217,19 @@
 
       if (instant) {
         incoming.style.transition = "none";
-        layers[front].style.transition = "none";
+        outgoing.style.transition = "none";
       }
 
       incoming.onload = function () {
         incoming.onload = null;
+        if (gen !== showGen) {
+          return;
+        }
         reveal();
         if (instant) {
           requestAnimationFrame(function () {
             incoming.style.transition = "";
-            layers[front].style.transition = "";
+            outgoing.style.transition = "";
           });
         }
       };
@@ -1133,7 +1241,7 @@
         reveal();
         if (instant) {
           incoming.style.transition = "";
-          layers[front].style.transition = "";
+          outgoing.style.transition = "";
         }
       }
     }
@@ -1203,7 +1311,107 @@
     var swipeX = 0;
     var swipeY = 0;
     var swipeOn = false;
+    var swipeDragging = false;
+    var swipeCarry = 0;
+    var swipeFollow = 0;
+    var hintTimer = 0;
+    var settleTimer = 0;
     var stageEl = document.querySelector(".stage");
+    var hintPrev = document.querySelector(".nav-hint-prev");
+    var hintNext = document.querySelector(".nav-hint-next");
+
+    function isPhone() {
+      return window.matchMedia("(max-width: 899px)").matches;
+    }
+
+    function flashHint(side) {
+      if (!isPhone()) {
+        return;
+      }
+      var el = side === "prev" ? hintPrev : hintNext;
+      hintPrev.classList.remove("is-on");
+      hintNext.classList.remove("is-on");
+      stageEl.classList.add("is-tap");
+      el.classList.add("is-on");
+      clearTimeout(hintTimer);
+      hintTimer = setTimeout(function () {
+        el.classList.remove("is-on");
+        stageEl.classList.remove("is-tap");
+      }, 320);
+    }
+
+    function currentLayer() {
+      return layers[front];
+    }
+
+    function layerTranslateX(el) {
+      var t = window.getComputedStyle(el).transform;
+      if (!t || t === "none") {
+        return 0;
+      }
+      var m = t.match(/matrix(?:3d)?\(([^)]+)\)/);
+      if (!m) {
+        return 0;
+      }
+      var parts = m[1].split(",");
+      return parseFloat(parts.length === 16 ? parts[12] : parts[4]) || 0;
+    }
+
+    function mapFollow(dx) {
+      var follow = swipeCarry + dx * 0.6;
+      if ((index <= 0 && follow > 0) || (index >= files.length - 1 && follow < 0)) {
+        follow *= 0.32;
+      }
+      var limit = Math.max(120, stageEl.clientWidth * 0.42);
+      if (follow > limit) {
+        follow = limit + (follow - limit) * 0.18;
+      } else if (follow < -limit) {
+        follow = -limit + (follow + limit) * 0.18;
+      }
+      return follow;
+    }
+
+    function clearDragStyle() {
+      clearTimeout(settleTimer);
+      stageEl.classList.remove("is-dragging");
+      stageEl.classList.remove("is-settling");
+      stageEl.classList.remove("is-committing");
+      layers.forEach(function (img) {
+        img.style.transform = "";
+      });
+    }
+
+    function springBack() {
+      clearTimeout(settleTimer);
+      stageEl.classList.remove("is-dragging");
+      stageEl.classList.remove("is-committing");
+      stageEl.classList.add("is-settling");
+      currentLayer().style.transform = "";
+      settleTimer = setTimeout(function () {
+        stageEl.classList.remove("is-settling");
+      }, 200);
+    }
+
+    function commitSwipe(dx) {
+      var dir = dx < 0 ? -1 : 1;
+      var commitX = swipeFollow + dir * 48;
+      clearTimeout(settleTimer);
+      stageEl.classList.remove("is-dragging");
+      stageEl.classList.remove("is-settling");
+      stageEl.classList.add("is-committing");
+      currentLayer().style.transform = "translateX(" + commitX + "px)";
+      if (dx < 0) {
+        next();
+      } else {
+        prev();
+      }
+      settleTimer = setTimeout(function () {
+        stageEl.classList.remove("is-committing");
+        layers.forEach(function (img) {
+          img.style.transform = "";
+        });
+      }, 300);
+    }
 
     prevHit.addEventListener("click", function (event) {
       event.stopPropagation();
@@ -1214,6 +1422,7 @@
       if (prevHit.classList.contains("is-off")) {
         return;
       }
+      flashHint("prev");
       prev();
     });
 
@@ -1226,22 +1435,52 @@
       if (nextHit.classList.contains("is-off")) {
         return;
       }
+      flashHint("next");
       next();
     });
-
-    function isPhone() {
-      return window.matchMedia("(max-width: 899px)").matches;
-    }
 
     stageEl.addEventListener("touchstart", function (event) {
       if (!isPhone() || event.touches.length !== 1) {
         swipeOn = false;
+        swipeDragging = false;
         return;
       }
       swipeX = event.touches[0].clientX;
       swipeY = event.touches[0].clientY;
       swipeOn = true;
+      swipeDragging = false;
+      if (stageEl.classList.contains("is-committing")) {
+        swipeCarry = 0;
+      } else {
+        swipeCarry = layerTranslateX(currentLayer());
+        clearTimeout(settleTimer);
+        stageEl.classList.remove("is-settling");
+        currentLayer().style.transform = "translateX(" + swipeCarry + "px)";
+      }
+      swipeFollow = swipeCarry;
     }, { passive: true });
+
+    stageEl.addEventListener("touchmove", function (event) {
+      if (!swipeOn || !isPhone() || event.touches.length !== 1) {
+        return;
+      }
+      var dx = event.touches[0].clientX - swipeX;
+      var dy = event.touches[0].clientY - swipeY;
+      if (!swipeDragging) {
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+          return;
+        }
+        if (Math.abs(dx) <= Math.abs(dy)) {
+          swipeOn = false;
+          return;
+        }
+        swipeDragging = true;
+        stageEl.classList.add("is-dragging");
+      }
+      event.preventDefault();
+      swipeFollow = mapFollow(dx);
+      currentLayer().style.transform = "translateX(" + swipeFollow + "px)";
+    }, { passive: false });
 
     stageEl.addEventListener("touchend", function (event) {
       if (!swipeOn) {
@@ -1249,22 +1488,36 @@
       }
       swipeOn = false;
       if (!isPhone() || event.changedTouches.length !== 1) {
+        swipeDragging = false;
+        clearDragStyle();
         return;
       }
       var dx = event.changedTouches[0].clientX - swipeX;
       var dy = event.changedTouches[0].clientY - swipeY;
-      if (Math.abs(dx) < 48 || Math.abs(dx) <= Math.abs(dy)) {
+      var dragged = swipeDragging;
+      swipeDragging = false;
+      if (!dragged) {
         return;
       }
       suppressTap = true;
       setTimeout(function () {
         suppressTap = false;
       }, 450);
-      if (dx < 0) {
-        next();
-      } else {
-        prev();
+      if (Math.abs(dx) < 48 || Math.abs(dx) <= Math.abs(dy)) {
+        springBack();
+        return;
       }
+      if ((dx < 0 && index >= files.length - 1) || (dx > 0 && index <= 0)) {
+        springBack();
+        return;
+      }
+      commitSwipe(dx);
+    }, { passive: true });
+
+    stageEl.addEventListener("touchcancel", function () {
+      swipeOn = false;
+      swipeDragging = false;
+      clearDragStyle();
     }, { passive: true });
 
     document.addEventListener("keydown", function (event) {
